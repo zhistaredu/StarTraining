@@ -1,0 +1,20 @@
+# 告诉EditorConfig插件，这是根文件，不用继续往上查找
+root = true
+
+# 匹配全部文件
+[*]
+[*.{js,jsx,ts,tsx,vue}]
+
+charset = utf-8
+indent_style = space # tab
+indent_size = 2
+end_of_line = lf
+
+# 在文件结尾插入新行
+insert_final_newline = true
+
+# 删除一行中的前后空格
+trim_trailing_whitespace = true
+
+[*.md]
+trim_trailing_whitespace = false

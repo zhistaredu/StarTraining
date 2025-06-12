@@ -1,0 +1,574 @@
+@import '../mixin';
+
+@charset "utf-8";
+body,
+p,
+ul,
+ol,
+dd,
+dl,
+dt,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+form,
+input,
+button,
+select,
+textarea,
+figure,
+pre,
+hr,
+blockquote,
+fieldset {
+  margin: 0;
+}
+ol,
+ul,
+th,
+td,
+fieldset,
+legend,
+input,
+button,
+select,
+textarea {
+  padding: 0;
+}
+/*Add the correct display in IE 9-.*/
+header,
+footer,
+nav,
+article,
+section,
+aside,
+summary,
+figcaption,
+figure,
+hgroup {
+  display: block;
+}
+audio,
+video,
+canvas,
+progress {
+  display: inline-block;
+  vertical-align: baseline;
+  *display: inline;
+  *zoom: 1;
+}
+/*
+* 1.防止现代浏览器将没有「controls」属性的 「audio」元素显示出来
+* 2.去掉 iOS 5 中多余的高度
+*/
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+/* Add the correct vertical alignment in Chrome, Firefox, and Opera. */
+progress {
+  vertical-align: baseline;
+}
+label {
+  cursor: pointer;
+}
+/* 修复 IE 7/8/9，Firefox 3 和 Safari 4 中 「hidden」属性不起作用的问题 */
+[hidden] {
+  display: none;
+}
+/*
+* 为可拖动元素添加拖动的光标，http://jsbin.com/apavod/1/edit
+*/
+[draggable] {
+  cursor: move;
+}
+/*
+  1. Remove the gray background on active links in IE 10.
+  2. Remove gaps in links underline in iOS 8+ and Safari 8+.
+*/
+a,
+a:focus,
+a:active {
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-decoration-skip: objects; /* 2 */
+  outline: none;
+}
+/*
+* 1. 去除 IE6-9 和 Firefox 3 中 a 内部 img 元素默认的边框
+* 2. 修正 IE8 图片消失bug
+* 3. 防止 img 指定「height」时图片高度不能按照宽度等比缩放，导致图片变形,http://jsbin.com/aJoTUca/2
+* 4. 让图片支持响应式
+* 5. 去除现代浏览器图片底部的空隙
+* 6. 修复 IE7 图片缩放失真
+*/
+img {
+  border: none;
+  width: auto\9;
+  height: auto;
+  max-width: 100%;
+  vertical-align: middle;
+  -ms-interpolation-mode: bicubic;
+}
+/*修复 IE9 中的「overflow」的怪异表现*/
+svg:not(:root) {
+  overflow: hidden;
+}
+address,
+caption,
+code,
+i,
+th,
+var {
+  font-style: normal;
+  font-weight: normal;
+}
+strong,
+b {
+  font-weight: normal;
+}
+em {
+  font-style: normal;
+}
+/* 去除默认的list-style */
+ul,
+ol,
+li {
+  list-style: none;
+}
+caption,
+th {
+  text-align: left;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 100%;
+  font-weight: normal;
+}
+
+/* 修正单个元素 */
+abbr {
+  border: 0;
+  font-variant: normal;
+}
+/*
+  1.Add the correct box sizing in Firefox.
+  2.Show the overflow in Edge and IE.
+*/
+hr {
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box; /* 1 */
+  height: 0; /* 1 */
+  overflow: visible; /* 2 */
+}
+/*网页标记，荧光笔,修正 IE6-11 中没有样式的问题*/
+mark {
+  background-color: #d2e5ff;
+  color: #000;
+}
+/**
+* 增强所有浏览器中 pre 标签中文本的可读性
+* 1. IE 6-7 不支持 pre-wrap
+* 2. pre 标签应当包含滚溢出
+*/
+pre {
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow: auto;
+}
+/**
+* 防止所有浏览器中的<sub>和<sup>影响行高
+* http://jsbin.com/usoyal/1/edit
+*/
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+sup {
+  top: -0.5em;
+}
+sub {
+  bottom: -0.25em;
+}
+/* 修正表格相关元素 */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+input,
+button,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  outline: none;
+  vertical-align: baseline;
+  *vertical-align: middle;
+}
+/*to enable resizing for IE*/
+input,
+textarea,
+select {
+  *font-size: 100%;
+}
+/* 去除默认的拉伸 */
+textarea {
+  resize: vertical;
+  overflow: auto;
+}
+/*修正 IE7 随着字数增加边距不断增加的问题*/
+button,
+input {
+  *overflow: visible;
+}
+button[disabled],
+input[disabled] {
+  cursor: default;
+}
+/* 统一各浏览器「text-transform」不会继承的问题,http://jsbin.com/iqecic/1/edit*/
+button,
+select {
+  text-transform: none;
+}
+/**
+* 修正 Chrome 30- option 中文字无法显示的问题
+* http://jsbin.com/avujas/1/edit
+*/
+select:disabled option:checked,
+option:disabled:checked {
+  color: #d2d2d2;
+}
+/*移除 Firefox 3+ 的内边距*/
+button::-moz-focus-inner,
+input::-moz-focus-inner,
+[type='button']::-moz-focus-inner,
+[type='reset']::-moz-focus-inner,
+[type='submit']::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+/*
+* 1. 修正 IE 8/9 box-sizing 被设置为「content-box」的问题
+* 2. 移除 IE 8/9 中多余的内边距
+* 3. 移除 IE7 中多余的内边距(IE6 中任然存在)
+*/
+input[type='checkbox'],
+input[type='radio'] {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0;
+  *height: 13px;
+  *width: 13px;
+}
+/*
+  1.Correct the cursor style of increment and decrement buttons in Chrome.
+  2.Correct the odd appearance in Chrome and Safari.
+  3.Remove the inner padding and cancel buttons in Chrome and Safari on macOS.
+*/
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  height: auto;
+} /* 1 */
+input[type='search'] {
+  -webkit-appearance: textfield;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+} /* 2 */
+input[type='search']::-webkit-search-cancel-button,
+input[type='search']::-webkit-search-decoration {
+  -webkit-appearance: none;
+} /* 3 */
+/* 防止 android软键盘把页面挤上去 */
+input[type='submit'],
+input[type='reset'],
+input[type='button'],
+button {
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+/*
+* 统一代码的字体设置
+* 字体要能明确区分数字 0 和字母 o
+* Mac 优先使用 Monaco，Windows 优先使用 Consolas
+* XP自带 Courier New
+* Windows 7开始自带的 Consolas
+* Mac上自带的Monaco，Osaka-Mono
+*/
+code,
+kbd,
+pre,
+samp {
+  font-family: monaco, menlo, consolas, 'courier new', courier, monospace;
+}
+
+/*
+  * 字体标准
+  * 系统字体：system-ui, -apple-system, BlinkMacSystemFont  => Chrome/Safari, Firefox, macOS
+  * 兜底字体：Segoe UI, Roboto, Helvetica, Arial, sans-serif => Windows, Android, masOS/iOS, Old Windows, Old Android
+  * Emoji 字体：Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji => masOS/iOS, window8.1/10, window7/8, Android
+*/
+@font-face {
+  font-family: Emoji;
+  src: local("Apple Color Emoji"), local("Segoe UI Emoji"), local("Segoe UI Symbol"), local("Noto Color Emoji");
+  unicode-range: U+1F000-1F644, U+203C-3299;
+}
+body {
+  font: 14px/1 system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Emoji, Helvetica, Arial, sans-serif;
+  text-align: left;
+  font-weight: 400;
+  color: @master;
+}
+
+/* 位置 */
+.tl {
+  text-align: left;
+}
+.tc {
+  text-align: center;
+}
+.tr {
+  text-align: right;
+}
+.md{
+  vertical-align: middle;
+}
+
+/* float */
+.fl {
+  float: left;
+  _display: inline;
+}
+.fr {
+  float: right;
+  _display: inline;
+}
+
+/* position */
+.pr {
+  position: relative;
+}
+.pa {
+  position: absolute;
+}
+
+/* 隐现 */
+.block {
+  display: block;
+}
+.inline {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+}
+.none {
+  display: none;
+}
+
+/* 手型 */
+.hand {
+  cursor: pointer;
+}
+
+/* 清除浮动 */
+.clearfix:after {
+  content: '.';
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+.clearfix {
+  *zoom: 1;
+}
+
+/* 加粗 */
+.fb {
+  font-weight: bold;
+}
+
+/* 颜色 */
+.c_fff {
+  color: #fff;
+}
+.c_000 {
+  color: #000;
+}
+.c_gray{
+  color: @gray;
+}
+
+/* 背景色 */
+.bg_fff {
+  background-color: #fff;
+}
+.bg_000 {
+  background-color: #000;
+}
+
+/* 文字排版 */
+.f12 {
+  font-size: 12px;
+}
+.f13 {
+  font-size: 13px;
+}
+.f14 {
+  font-size: 14px;
+}
+.f15 {
+  font-size: 15px;
+}
+.f16 {
+  font-size: 16px;
+}
+.f18 {
+  font-size: 18px;
+}
+.f20 {
+  font-size: 20px;
+}
+.f22 {
+  font-size: 22px;
+}
+.f24 {
+  font-size: 24px;
+}
+.f26 {
+  font-size: 26px;
+}
+.f28 {
+  font-size: 28px;
+}
+.f30 {
+  font-size: 30px;
+}
+
+/* padding */
+.p10 {
+  padding: 10px;
+}
+.p15 {
+  padding: 15px;
+}
+.p20 {
+  padding: 20px;
+}
+
+.pl10 {
+  padding-left: 10px;
+}
+.pl15 {
+  padding-left: 15px;
+}
+.pl20 {
+  padding-left: 20px;
+}
+
+.pr10 {
+  padding-right: 10px;
+}
+.pr15 {
+  padding-right: 15px;
+}
+.pr20 {
+  padding-right: 20px;
+}
+
+.pt10 {
+  padding-top: 10px;
+}
+.pt15 {
+  padding-top: 15px;
+}
+.pt20 {
+  padding-top: 20px;
+}
+
+.pb10 {
+  padding-bottom: 10px;
+}
+.pb15 {
+  padding-bottom: 15px;
+}
+.pb20 {
+  padding-bottom: 20px;
+}
+
+/* margin */
+.m10 {
+  margin: 10px;
+}
+.m15 {
+  margin: 15px;
+}
+.m20 {
+  margin: 20px;
+}
+
+.ml10 {
+  margin-left: 10px;
+}
+.ml15 {
+  margin-left: 15px;
+}
+.ml20 {
+  margin-left: 20px;
+}
+.ml30{
+  margin-left: 30px;
+}
+
+.mr10 {
+  margin-right: 10px;
+}
+.mr15 {
+  margin-right: 15px;
+}
+.mr20 {
+  margin-right: 20px;
+}
+.mr30{
+  margin-right: 30px;
+}
+
+.mt10 {
+  margin-top: 10px;
+}
+.mt15 {
+  margin-top: 15px;
+}
+.mt20 {
+  margin-top: 20px;
+}
+
+.mb10 {
+  margin-bottom: 10px;
+}
+.mb15 {
+  margin-bottom: 15px;
+}
+.mb20 {
+  margin-bottom: 20px;
+}
+
+#app {
+  margin: 0 auto;
+}
+
+.ellipsis{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

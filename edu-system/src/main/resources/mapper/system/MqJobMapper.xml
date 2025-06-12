@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.system.mapper.MqJobMapper">
+    
+    <resultMap type="MqJob" id="MqJobResult">
+        <result property="id"    column="id"    />
+        <result property="uuid"    column="uuid"    />
+        <result property="targetId"    column="target_id"    />
+        <result property="targetTitle"    column="target_title"    />
+        <result property="argument"    column="argument"    />
+        <result property="module"    column="module"    />
+        <result property="action"    column="action"    />
+        <result property="actionNum"    column="action_num"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+        <result property="companyId"    column="company_id"    />
+    </resultMap>
+
+    <sql id="selectMqJobVo">
+        select id, uuid, target_id, target_title, argument, module, action, action_num, status, create_time, update_time, create_user_id, update_user_id company_id from mq_job
+    </sql>
+
+    <select id="selectMqJobList" parameterType="MqJob" resultMap="MqJobResult">
+        <include refid="selectMqJobVo"/>
+        where company_id = #{companyId}
+        <if test="module != null  and module != ''"> and module = #{module}</if>
+        <if test="targetId != null  and targetId != ''"> and target_id = #{targetId}</if>
+        <if test="uuid != null  and uuid != ''"> and uuid = #{uuid}</if>
+    </select>
+    
+    <select id="selectMqJobById" parameterType="Map" resultMap="MqJobResult">
+        <include refid="selectMqJobVo"/>
+        where company_id = #{companyId} AND uuid = #{uuid}
+    </select>
+        
+    <insert id="insertMqJob" parameterType="MqJob" useGeneratedKeys="true" keyProperty="id">
+        insert into mq_job
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="targetId != null">target_id,</if>
+            <if test="targetTitle != null">target_title,</if>
+            <if test="argument != null">argument,</if>
+            <if test="module != null">module,</if>
+            <if test="action != null">action,</if>
+            <if test="actionNum != null">action_num,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="updateUserId != null">update_user_id,</if>
+            <if test="companyId != null">company_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="targetId != null">#{targetId},</if>
+            <if test="targetTitle != null">#{targetTitle},</if>
+            <if test="argument != null">#{argument},</if>
+            <if test="module != null">#{module},</if>
+            <if test="action != null">#{action},</if>
+            <if test="actionNum != null">#{actionNum},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="updateUserId != null">#{updateUserId},</if>
+            <if test="companyId != null">#{companyId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMqJob" parameterType="MqJob">
+        update mq_job
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="targetId != null">target_id = #{targetId},</if>
+            <if test="targetTitle != null">target_title = #{targetTitle},</if>
+            <if test="argument != null">argument = #{argument},</if>
+            <if test="module != null">module = #{module},</if>
+            <if test="action != null">action = #{action},</if>
+            <if test="actionNum != null and actionNum > 0">action_num = #{actionNum},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateUserId != null">update_user_id = #{updateUserId},</if>
+        </trim>
+        where company_id = #{companyId} and uuid = #{uuid}
+    </update>
+
+</mapper>

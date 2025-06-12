@@ -1,0 +1,223 @@
+.lesson-video {
+    color: #DB5145 !important;
+}
+
+.lesson-audio {
+    color: #1E94F2 !important;
+}
+
+.lesson-text {
+    color: #26A566 !important;
+}
+
+.lesson-test {
+    color: #149AF1 !important;
+}
+
+.lesson-home-work {
+    color: #DB5145 !important;
+}
+
+.lesson-link {
+    color: #00BBD3 !important;
+}
+
+.lesson-document {
+    color: #00A5F3 !important;
+}
+/*图标滑过动画 start*/
+
+.icon-jump {
+    b,
+    i {
+        transition: .3s all;
+    }
+    &:hover {
+        b {
+            color: #3296FA !important;
+        }
+        i {
+            color: #3296FA !important;
+            transform: translateY(-5px);
+        }
+    }
+}
+/*图标滑过动画 end*/
+
+/*添加课件弹窗 start*/
+
+.add-lesson {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1001;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .3);
+}
+
+.add-list {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 699px;
+    height: 366px;
+    margin-left: -350px;
+    margin-top: -183px;
+    padding: 30px;
+    background-color: #fff;
+    .add-tit {
+        position: relative;
+        span {
+            font-size: 16px;
+            color: #000;
+            font-weight: bold;
+        }
+        i {
+            position: absolute;
+            right: 0;
+            top: 0;
+            font-size: 20px;
+            cursor: pointer;
+        }
+    }
+    .add-content {
+        >p {
+            color: #999;
+            font-size: 14px;
+            padding-top: 20px;
+            &.pt40 {
+                padding-top: 40px;
+            }
+        }
+
+        >ul {
+            font-size: 0;
+            display: flex;
+            padding: 20px 20px 0 38px;
+            justify-content: space-between;
+            li {
+                text-align: center;
+                display: inline-block;
+                cursor: pointer;
+                &:hover {
+                    i {
+                        transform: translateY(-6px);
+                    }
+                    >p {
+                        &::before {
+                            transform: scaleY(1);
+                        }
+                        &::after {
+                            transform: scaleX(1);
+                        }
+                        span {
+                            &::before {
+                                transform: scaleX(1);
+                            }
+                            &::after {
+                                transform: scaleY(1);
+                            }
+                        }
+                    }
+                }
+                >i {
+                    font-size: 36px;
+                    display: inline-block;
+                    transition: 0.3s all;
+                }
+
+                /*设置动画元素背景颜色公共方法*/
+                .setBgc(@color) {
+                    &::before,
+                    &::after {
+                        background: @color;
+                    }
+                    span {
+                        &::before,
+                        &::after {
+                            background: @color;
+                        }
+                    }
+                }
+                >p {
+                    position: relative;
+                    font-size: 14px;
+                    padding-top: 5px;
+                    color: #666;
+                    &.p-text {
+                        .setBgc(#26A566)
+                    }
+                    &.p-document {
+                        .setBgc(#00A5F3)
+                    }
+                    &.p-video {
+                        .setBgc(#DB5145)
+                    }
+                    &.p-audio {
+                        .setBgc(#1E94F2)
+                    }
+                    &.p-link {
+                        .setBgc(#00BBD3)
+                    }
+                    &.p-test {
+                        .setBgc(#149AF1)
+                    }
+
+                    &::before,
+                    &::after {
+                        display: block;
+                        content: '';
+                        position: absolute;
+                        transition: .3s all;
+                    }
+                    &::before {
+                        left: -6px;
+                        top: 9px;
+                        width: 2px;
+                        height: 16px;
+
+                        transform-origin: bottom center;
+                        transform: scaleY(0);
+                    }
+                    &::after {
+                        left: -6px;
+                        bottom: -3px;
+                        width: 16px;
+                        height: 2px;
+                        transform-origin: left center;
+                        transform: scaleX(0);
+                    }
+                    span {
+                        &::before,
+                        &::after {
+                            display: block;
+                            content: '';
+                            position: absolute;
+                            transition: .3s all;
+                        }
+                        &::before {
+                            top: 3px;
+                            right: -6px;
+                            height: 2px;
+                            width: 16px;
+                            background: #00A5F3;
+                            transform-origin: right center;
+                            transform: scaleX(0);
+                        }
+                        &::after {
+                            top: 5px;
+                            right: -6px;
+                            height: 16px;
+                            width: 2px;
+                            background: #00A5F3;
+                            transform-origin: top center;
+                            transform: scaleY(0);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+/*添加课件弹窗 end*/

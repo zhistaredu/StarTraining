@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="renderer" content="webkit" />
+  <meta name="force-rendering" content="webkit" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="expires" content="0">
+  <title></title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body,
+    html {
+      width: 100%;
+      height: 100%;
+      overflow-y: hidden;
+    }
+
+    #login-index {
+      width: 100%;
+      height: 100%;
+      overflow-y: hidden;
+    }
+
+    .login {
+      width: 100%;
+      height: 100%;
+      background-color: #dce5ee;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-bottom: 100px;
+      box-sizing: border-box;
+    }
+
+    .login img {
+      width: 33%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="login-index">
+    <div class="login">
+      <img src="./img/index.gif" alt="" />
+      <div class="code-box">
+        <span>获取到的code是</span>
+        <span id="code"></span>
+      </div>
+    </div>
+  </div>
+</body>
+<script type="text/javascript">
+  var protocol = window.location.protocol;
+  var host = window.location.host;
+  var domain = protocol + '//' + host + '/';
+  var hostUrl = domain + 'yunapi/';
+
+  // 通过地址栏获取参数
+  function getParam(name) {
+    var search = document.location.search;
+    var pattern = new RegExp('[?&]' + name + '\=([^&]+)', 'g');
+    var matcher = pattern.exec(search);
+    var items = null;
+    if (null != matcher) {
+      try {
+        items = decodeURIComponent(decodeURIComponent(matcher[1]));
+      } catch (e) {
+        try {
+          items = decodeURIComponent(matcher[1]);
+        } catch (e) {
+          items = matcher[1];
+        }
+      }
+    }
+    return items;
+  }
+
+  var _code = getParam('code');
+  // console.log(_code)
+  document.getElementById('code').innerHTML = _code
+</script>
+
+</html>

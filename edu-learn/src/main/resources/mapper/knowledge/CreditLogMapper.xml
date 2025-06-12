@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.knowledge.mapper.CreditLogMapper">
+    
+    <resultMap type="CreditLog" id="CreditLogResult">
+        <result property="id"    column="id"    />
+        <result property="uuid"    column="uuid"    />
+        <result property="targetId"    column="target_id"    />
+        <result property="targetTitle"    column="target_title"    />
+        <result property="module"    column="module"    />
+        <result property="credit"    column="credit"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="isDelete"    column="is_delete"    />
+        <result property="companyId"    column="company_id"    />
+    </resultMap>
+
+    <resultMap type="CreditRanking" id="CreditRankingResult">
+        <result property="avatar"    column="avatar"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="totalCredit"    column="total_credit"    />
+    </resultMap>
+
+    <sql id="selectCreditLogVo">
+        select id, uuid, target_id, target_title, module, credit, user_id, user_name, create_time, update_time, remark, is_delete, company_id from credit_log
+    </sql>
+
+    <select id="selectCreditLogList" parameterType="Map" resultMap="CreditLogResult">
+        <include refid="selectCreditLogVo"/>
+        where company_id = #{companyId}
+        <if test="targetId != null  and targetId != ''"> and target_id = #{targetId}</if>
+        <if test="module != null  and module != ''"> and module = #{module}</if>
+        <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+    </select>
+
+    <select id="selectCreditRanking" parameterType="Map" resultMap="CreditRankingResult">
+        SELECT
+            cl.user_id,
+            sup.user_name,
+            sup.avatar,
+            ifnull(SUM(cl.credit), 0) AS total_credit
+        FROM
+            credit_log cl
+                LEFT JOIN sys_user_path sup ON sup.company_id = cl.company_id
+                AND sup.user_id = cl.user_id
+        WHERE
+            cl.company_id = #{companyId}
+        GROUP BY
+            cl.user_id
+        ORDER BY
+            total_credit DESC
+    </select>
+
+    <select id="selectCreditLogSum" parameterType="Map" resultType="int">
+        select ifnull(SUM(credit),0) from credit_log
+        where company_id = #{companyId}
+        <if test="targetId != null  and targetId != ''"> and target_id = #{targetId}</if>
+        <if test="module != null  and module != ''"> and module = #{module}</if>
+        <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+        <if test="creditsToday != null  and creditsToday != ''"> and create_time > #{creditsToday}</if>
+    </select>
+    
+    <select id="selectCreditLogById" parameterType="Map" resultMap="CreditLogResult">
+        <include refid="selectCreditLogVo"/>
+        where company_id = #{companyId}
+        <if test="uuid != null  and uuid != ''"> and uuid = #{uuid}</if>
+        <if test="targetId != null  and targetId != ''"> and target_id = #{targetId}</if>
+        <if test="module != null  and module != ''"> and module = #{module}</if>
+        <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+    </select>
+        
+    <insert id="insertCreditLog" parameterType="CreditLog" useGeneratedKeys="true" keyProperty="id">
+        insert into credit_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="targetId != null">target_id,</if>
+            <if test="targetTitle != null">target_title,</if>
+            <if test="module != null">module,</if>
+            <if test="credit != null">credit,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="isDelete != null">is_delete,</if>
+            <if test="companyId != null">company_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="targetId != null">#{targetId},</if>
+            <if test="targetTitle != null">#{targetTitle},</if>
+            <if test="module != null">#{module},</if>
+            <if test="credit != null">#{credit},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+            <if test="companyId != null">#{companyId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCreditLog" parameterType="CreditLog">
+        update credit_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uuid != null">uuid = #{uuid},</if>
+            <if test="targetId != null">target_id = #{targetId},</if>
+            <if test="targetTitle != null">target_title = #{targetTitle},</if>
+            <if test="module != null">module = #{module},</if>
+            <if test="credit != null">credit = #{credit},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+            <if test="companyId != null">company_id = #{companyId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCreditLogById" parameterType="Long">
+        delete from credit_log where id = #{id}
+    </delete>
+
+    <delete id="deleteCreditLogByIds" parameterType="String">
+        delete from credit_log where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

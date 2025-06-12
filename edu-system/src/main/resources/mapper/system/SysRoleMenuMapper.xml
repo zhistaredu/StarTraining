@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.system.mapper.SysRoleMenuMapper">
+
+	<resultMap type="SysRoleMenu" id="SysRoleMenuResult">
+		<result property="roleId"     column="role_id"      />
+		<result property="menuId"     column="menu_id"      />
+		<result property="companyId"     column="company_id"      />
+	</resultMap>
+
+	<select id="selectRoleMenuList" parameterType="Map" resultMap="SysRoleMenuResult">
+		select role_id,menu_id,company_id from sys_role_menu where company_id = #{companyId} and role_id = #{roleId}
+	</select>
+	
+	<select id="checkMenuExistRole" resultType="Integer">
+	    select count(1) from sys_role_menu where company_id = #{companyId} and menu_id = #{menuId}
+	</select>
+
+	<delete id="deleteRoleMenuByRoleId" parameterType="Map">
+		delete from sys_role_menu where company_id = #{companyId} and role_id=#{roleId}
+	</delete>
+	
+	<delete id="deleteRoleMenu" parameterType="String">
+ 		delete from sys_role_menu where company_id = #{companyId} and role_id in
+ 		<foreach collection="array" item="roleId" open="(" separator="," close=")">
+ 			#{roleId}
+        </foreach> 
+ 	</delete>
+	
+	<insert id="batchRoleMenu">
+		insert into sys_role_menu(role_id, menu_id, company_id) values
+		<foreach item="item" index="index" collection="list" separator=",">
+			(#{item.roleId},#{item.menuId},#{item.companyId})
+		</foreach>
+	</insert>
+	
+</mapper> 

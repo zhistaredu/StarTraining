@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.knowledge.mapper.MaterialLibraryMapper">
+    
+    <resultMap type="MaterialLibrary" id="MaterialLibraryResult">
+        <result property="id"    column="id"    />
+        <result property="uuid"    column="uuid"    />
+        <result property="title"    column="title"    />
+        <result property="status"    column="status"    />
+        <result property="object"    column="object"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="categoryTitle"    column="category_title"    />
+        <result property="lectorId"    column="lector_id"    />
+        <result property="useRange"    column="use_range"    />
+        <result property="isDelete"    column="is_delete"    />
+        <result property="name"    column="name"    />
+        <result property="size"    column="size"    />
+        <result property="length"    column="length"    />
+        <result property="transCode"    column="trans_code"    />
+        <result property="transCodeStatus"    column="trans_code_status"    />
+        <result property="type"    column="type"    />
+        <result property="jobId"    column="job_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createUserName"    column="create_user_name"    />
+        <result property="updateUserId"    column="update_user_id"    />
+        <result property="updateUserName"    column="update_user_name"    />
+        <result property="companyId"    column="company_id"    />
+    </resultMap>
+
+    <sql id="selectMaterialLibraryVo">
+        select id, title, uuid, status, object, category_id, category_title,lector_id,use_range, is_delete, name, size, length, trans_code, trans_code_status, type, job_id, create_time, update_time, create_user_id, create_user_name, update_user_id, update_user_name, company_id from material_library
+    </sql>
+
+    <select id="selectMaterialLibraryList" parameterType="Map" resultMap="MaterialLibraryResult">
+        <include refid="selectMaterialLibraryVo"/>
+        where company_id = #{companyId}
+        <if test="status != null "> and status = #{status}</if>
+        <if test="categoryId != null  and categoryId != ''"> and category_id = #{categoryId}</if>
+        <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+        <if test="type != null  and type != ''"> and type = #{type}</if>
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectMaterialLibraryById" parameterType="Map" resultMap="MaterialLibraryResult">
+        <include refid="selectMaterialLibraryVo"/>
+        where company_id = #{companyId} and uuid = #{uuid}
+    </select>
+        
+    <insert id="insertMaterialLibrary" parameterType="MaterialLibrary" useGeneratedKeys="true" keyProperty="id">
+        insert into material_library
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="title != null">title,</if>
+            <if test="status != null">status,</if>
+            <if test="object != null">object,</if>
+            <if test="categoryId != null">category_id,</if>
+            <if test="categoryTitle != null">category_title,</if>
+            <if test="lectorId != null">lector_id,</if>
+            <if test="useRange != null">use_range,</if>
+            <if test="isDelete != null">is_delete,</if>
+            <if test="name != null">name,</if>
+            <if test="size != null">size,</if>
+            <if test="length != null">length,</if>
+            <if test="transCode != null">trans_code,</if>
+            <if test="transCodeStatus != null">trans_code_status,</if>
+            <if test="type != null">type,</if>
+            <if test="jobId != null">job_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="createUserName != null">create_user_name,</if>
+            <if test="updateUserId != null">update_user_id,</if>
+            <if test="updateUserName != null">update_user_name,</if>
+            <if test="companyId != null">company_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="title != null">#{title},</if>
+            <if test="status != null">#{status},</if>
+            <if test="object != null">#{object},</if>
+            <if test="categoryId != null">#{categoryId},</if>
+            <if test="categoryTitle != null">#{categoryTitle},</if>
+            <if test="lectorId != null">#{lectorId},</if>
+            <if test="useRange != null">#{useRange},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+            <if test="name != null">#{name},</if>
+            <if test="size != null">#{size},</if>
+            <if test="length != null">#{length},</if>
+            <if test="transCode != null">#{transCode},</if>
+            <if test="transCodeStatus != null">#{transCodeStatus},</if>
+            <if test="type != null">#{type},</if>
+            <if test="jobId != null">#{jobId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+            <if test="updateUserId != null">#{updateUserId},</if>
+            <if test="updateUserName != null">#{updateUserName},</if>
+            <if test="companyId != null">#{companyId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMaterialLibrary" parameterType="MaterialLibrary">
+        update material_library
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null">title = #{title},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="object != null">object = #{object},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="categoryTitle != null">category_title = #{categoryTitle},</if>
+            <if test="lectorId != null">lector_id = #{lectorId},</if>
+            <if test="useRange != null">use_range = #{useRange},</if>
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="size != null">size = #{size},</if>
+            <if test="length != null">length = #{length},</if>
+            <if test="transCode != null">trans_code = #{transCode},</if>
+            <if test="transCodeStatus != null">trans_code_status = #{transCodeStatus},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="jobId != null">job_id = #{jobId},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateUserId != null">update_user_id = #{updateUserId},</if>
+            <if test="updateUserName != null">update_user_name = #{updateUserName},</if>
+        </trim>
+        where company_id = #{companyId} and uuid = #{uuid}
+    </update>
+
+    <delete id="deleteMaterialLibraryById" parameterType="Long">
+        delete from material_library where id = #{id}
+    </delete>
+
+    <delete id="deleteMaterialLibraryByIds" parameterType="String">
+        delete from material_library where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

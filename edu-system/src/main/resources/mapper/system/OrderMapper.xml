@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.system.mapper.OrderMapper">
+    
+    <resultMap type="Order" id="OrderResult">
+        <result property="id"    column="id"    />
+        <result property="syncAction"    column="sync_action"    />
+        <result property="suiteId"    column="suite_id"    />
+        <result property="suiteKey"    column="suite_key"    />
+        <result property="corpId"    column="corp_id"    />
+        <result property="goodsCode"    column="goods_code"    />
+        <result property="itemCode"    column="item_code"    />
+        <result property="maxOfPeople"    column="max_of_people"    />
+        <result property="minOfPeople"    column="min_of_people"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="paidTime"    column="paid_time"    />
+        <result property="serviceStopTime"    column="service_stop_time"    />
+        <result property="payFee"    column="pay_fee"    />
+        <result property="orderCreateSource"    column="order_create_source"    />
+        <result property="nominalPayFee"    column="nominal_pay_fee"    />
+        <result property="discountFee"    column="discount_fee"    />
+        <result property="discount"    column="discount"    />
+        <result property="distributorCorpId"    column="distributor_corp_id"    />
+        <result property="distributorCorpName"    column="distributor_corp_name"    />
+        <result property="solutionPackageName"    column="solution_package_name"    />
+        <result property="articleType"    column="article_type"    />
+        <result property="subQuantity"    column="sub_quantity"    />
+        <result property="serviceStartTime"    column="service_start_time"    />
+        <result property="orderType"    column="order_type"    />
+        <result property="status"    column="status"    />
+        <result property="orderTime"    column="order_time"    />
+        <result property="leadsFrom"    column="leads_from"    />
+        <result property="purchaseType"    column="purchase_type"    />
+        <result property="eventData"    column="event_data"    />
+    </resultMap>
+
+    <sql id="selectOrderVo">
+        select id, sync_action, suite_id, suite_key, corp_id, goods_code, item_code, max_of_people, min_of_people, order_id, paid_time, service_stop_time, pay_fee, order_create_source, nominal_pay_fee, discount_fee, discount, distributor_corp_id, distributor_corp_name, solution_package_name, article_type, sub_quantity, service_start_time, order_type, status, order_time, leads_from, purchase_type, event_data from order
+    </sql>
+
+    <select id="selectOrderList" parameterType="Order" resultMap="OrderResult">
+        <include refid="selectOrderVo"/>
+        <where>  
+            <if test="suiteId != null  and suiteId != ''"> and suite_id = #{suiteId}</if>
+            <if test="suiteKey != null  and suiteKey != ''"> and suite_key = #{suiteKey}</if>
+            <if test="corpId != null  and corpId != ''"> and corp_id = #{corpId}</if>
+            <if test="goodsCode != null  and goodsCode != ''"> and goods_code = #{goodsCode}</if>
+        </where>
+    </select>
+    
+    <select id="selectOrderById" parameterType="Long" resultMap="OrderResult">
+        <include refid="selectOrderVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOrder" parameterType="Order" useGeneratedKeys="true" keyProperty="id">
+        insert into order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="syncAction != null">sync_action,</if>
+            <if test="suiteId != null">suite_id,</if>
+            <if test="suiteKey != null">suite_key,</if>
+            <if test="corpId != null">corp_id,</if>
+            <if test="goodsCode != null">goods_code,</if>
+            <if test="itemCode != null">item_code,</if>
+            <if test="maxOfPeople != null">max_of_people,</if>
+            <if test="minOfPeople != null">min_of_people,</if>
+            <if test="orderId != null">order_id,</if>
+            <if test="paidTime != null">paid_time,</if>
+            <if test="serviceStopTime != null">service_stop_time,</if>
+            <if test="payFee != null">pay_fee,</if>
+            <if test="orderCreateSource != null">order_create_source,</if>
+            <if test="nominalPayFee != null">nominal_pay_fee,</if>
+            <if test="discountFee != null">discount_fee,</if>
+            <if test="discount != null">discount,</if>
+            <if test="distributorCorpId != null">distributor_corp_id,</if>
+            <if test="distributorCorpName != null">distributor_corp_name,</if>
+            <if test="solutionPackageName != null">solution_package_name,</if>
+            <if test="articleType != null">article_type,</if>
+            <if test="subQuantity != null">sub_quantity,</if>
+            <if test="serviceStartTime != null">service_start_time,</if>
+            <if test="orderType != null">order_type,</if>
+            <if test="status != null">status,</if>
+            <if test="orderTime != null">order_time,</if>
+            <if test="leadsFrom != null">leads_from,</if>
+            <if test="purchaseType != null">purchase_type,</if>
+            <if test="eventData != null">event_data,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="syncAction != null">#{syncAction},</if>
+            <if test="suiteId != null">#{suiteId},</if>
+            <if test="suiteKey != null">#{suiteKey},</if>
+            <if test="corpId != null">#{corpId},</if>
+            <if test="goodsCode != null">#{goodsCode},</if>
+            <if test="itemCode != null">#{itemCode},</if>
+            <if test="maxOfPeople != null">#{maxOfPeople},</if>
+            <if test="minOfPeople != null">#{minOfPeople},</if>
+            <if test="orderId != null">#{orderId},</if>
+            <if test="paidTime != null">#{paidTime},</if>
+            <if test="serviceStopTime != null">#{serviceStopTime},</if>
+            <if test="payFee != null">#{payFee},</if>
+            <if test="orderCreateSource != null">#{orderCreateSource},</if>
+            <if test="nominalPayFee != null">#{nominalPayFee},</if>
+            <if test="discountFee != null">#{discountFee},</if>
+            <if test="discount != null">#{discount},</if>
+            <if test="distributorCorpId != null">#{distributorCorpId},</if>
+            <if test="distributorCorpName != null">#{distributorCorpName},</if>
+            <if test="solutionPackageName != null">#{solutionPackageName},</if>
+            <if test="articleType != null">#{articleType},</if>
+            <if test="subQuantity != null">#{subQuantity},</if>
+            <if test="serviceStartTime != null">#{serviceStartTime},</if>
+            <if test="orderType != null">#{orderType},</if>
+            <if test="status != null">#{status},</if>
+            <if test="orderTime != null">#{orderTime},</if>
+            <if test="leadsFrom != null">#{leadsFrom},</if>
+            <if test="purchaseType != null">#{purchaseType},</if>
+            <if test="eventData != null">#{eventData},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOrder" parameterType="Order">
+        update order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="syncAction != null">sync_action = #{syncAction},</if>
+            <if test="suiteId != null">suite_id = #{suiteId},</if>
+            <if test="suiteKey != null">suite_key = #{suiteKey},</if>
+            <if test="corpId != null">corp_id = #{corpId},</if>
+            <if test="goodsCode != null">goods_code = #{goodsCode},</if>
+            <if test="itemCode != null">item_code = #{itemCode},</if>
+            <if test="maxOfPeople != null">max_of_people = #{maxOfPeople},</if>
+            <if test="minOfPeople != null">min_of_people = #{minOfPeople},</if>
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="paidTime != null">paid_time = #{paidTime},</if>
+            <if test="serviceStopTime != null">service_stop_time = #{serviceStopTime},</if>
+            <if test="payFee != null">pay_fee = #{payFee},</if>
+            <if test="orderCreateSource != null">order_create_source = #{orderCreateSource},</if>
+            <if test="nominalPayFee != null">nominal_pay_fee = #{nominalPayFee},</if>
+            <if test="discountFee != null">discount_fee = #{discountFee},</if>
+            <if test="discount != null">discount = #{discount},</if>
+            <if test="distributorCorpId != null">distributor_corp_id = #{distributorCorpId},</if>
+            <if test="distributorCorpName != null">distributor_corp_name = #{distributorCorpName},</if>
+            <if test="solutionPackageName != null">solution_package_name = #{solutionPackageName},</if>
+            <if test="articleType != null">article_type = #{articleType},</if>
+            <if test="subQuantity != null">sub_quantity = #{subQuantity},</if>
+            <if test="serviceStartTime != null">service_start_time = #{serviceStartTime},</if>
+            <if test="orderType != null">order_type = #{orderType},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="orderTime != null">order_time = #{orderTime},</if>
+            <if test="leadsFrom != null">leads_from = #{leadsFrom},</if>
+            <if test="purchaseType != null">purchase_type = #{purchaseType},</if>
+            <if test="eventData != null">event_data = #{eventData},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOrderById" parameterType="Long">
+        delete from order where id = #{id}
+    </delete>
+
+    <delete id="deleteOrderByIds" parameterType="String">
+        delete from order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.system.mapper.SysDeptMapper">
+
+	<resultMap type="SysDept" id="SysDeptResult">
+		<result property="deptId"     column="dept_id"     />
+		<result property="parentId"   column="parent_id"   />
+		<result property="isChildren" column="is_children" />
+		<result property="deptIdPath"  column="dept_id_path"   />
+		<result property="deptNamePath"  column="dept_name_path"   />
+		<result property="deptName"   column="dept_name"   />
+		<result property="orderNum"   column="order_num"   />
+		<result property="leader"     column="leader"      />
+		<result property="phone"      column="phone"       />
+		<result property="email"      column="email"       />
+		<result property="status"     column="status"      />
+		<result property="isDelete"    column="is_delete"    />
+		<result property="parentName" column="parent_name" />
+		<result property="createBy"   column="create_by"   />
+		<result property="createTime" column="create_time" />
+		<result property="updateBy"   column="update_by"   />
+		<result property="updateTime" column="update_time" />
+		<result property="companyId"   column="company_id"   />
+	</resultMap>
+	
+	<sql id="selectDeptVo">
+        select d.dept_id, d.parent_id,d.dept_id_path,d.dept_name_path, d.dept_name, d.order_num, d.leader, d.phone, d.email, d.status, d.is_delete, d.create_by, d.create_time, d.company_id
+        from sys_dept d
+    </sql>
+    
+	<select id="selectDeptList" parameterType="Map" resultMap="SysDeptResult">
+        <include refid="selectDeptVo"/>
+        where d.company_id = #{companyId} AND d.is_delete = 0
+		<if test="deptId != null">
+			AND d.dept_id = #{deptId}
+		</if>
+        <if test="parentId != null">
+			AND d.parent_id = #{parentId}
+		</if>
+		<if test="deptName != null and deptName != ''">
+			AND d.dept_name like concat('%', #{deptName}, '%')
+		</if>
+		<if test="status != null and status != ''">
+			AND d.status = #{status}
+		</if>
+		<!-- 数据范围过滤 -->
+		<if test="scopeIds != null and scopeIds != ''">
+			AND d.dept_id in
+			<foreach collection="scopeIds" item="deptId" open="(" separator="," close=")">
+				#{deptId}
+			</foreach>
+		</if>
+		order by d.parent_id, d.order_num
+    </select>
+
+	<select id="selectDeptByList" parameterType="Map" resultMap="SysDeptResult">
+		<include refid="selectDeptVo"/>
+		where d.is_delete = 0 AND d.company_id = #{companyId}
+		<if test="deptId != null">
+			AND d.dept_id = #{deptId}
+		</if>
+		<if test="scopeIds != null and scopeIds != ''">
+			AND d.dept_id in
+			<foreach collection="scopeIds" item="deptId" open="(" separator="," close=")">
+				#{deptId}
+			</foreach>
+		</if>
+		<if test="parentId != null">
+			AND d.parent_id = #{parentId}
+		</if>
+		<if test="deptName != null and deptName != ''">
+			AND d.dept_name like concat('%', #{deptName}, '%')
+		</if>
+		<if test="status != null and status != ''">
+			AND d.status = #{status}
+		</if>
+	</select>
+    
+    <select id="selectDeptListByRoleId" resultType="Map">
+		select d.dept_id
+		from sys_dept d
+            left join sys_role_dept rd on d.dept_id = rd.dept_id
+        where d.company_id = #{companyId} and rd.company_id = #{companyId} and rd.role_id = #{roleId}
+			<!-- 数据范围过滤 -->
+			<if test="scopeIds != null">
+				AND d.dept_id in
+				<foreach collection="scopeIds" item="deptId" open="(" separator="," close=")">
+					#{deptId}
+				</foreach>
+			</if>
+		order by d.parent_id, d.order_num
+	</select>
+    
+    <select id="selectDeptById" parameterType="map" resultMap="SysDeptResult">
+	<include refid="selectDeptVo"/>
+	where company_id = #{companyId}
+		<if test="deptId != null"> AND dept_id = #{deptId} </if>
+		 limit 1
+	</select>
+
+	<select id="selectDeptByIdList" parameterType="map" resultMap="SysDeptResult">
+		<include refid="selectDeptVo"/>
+		where company_id = #{companyId}
+		<if test="deptId != null"> AND dept_id = #{deptId} </if>
+	</select>
+    
+    <select id="checkDeptExistUser" parameterType="String" resultType="int">
+		select count(1) from sys_user where dept_id = #{deptId} and is_delete = 0
+	</select>
+	
+	<select id="hasChildByDeptId" parameterType="String" resultType="int">
+		select count(1) from sys_dept
+		where is_delete = 0 and parent_id = #{deptId} limit 1
+	</select>
+	
+	<select id="selectChildrenDeptById" parameterType="String" resultMap="SysDeptResult">
+		select * from sys_dept where find_in_set(#{deptId}, dept_id_path)
+	</select>
+	
+	<select id="selectNormalChildrenDeptById" parameterType="String" resultType="int">
+		select count(*) from sys_dept where status = 0 and is_delete = 0 and find_in_set(#{deptId}, dept_id_path)
+	</select>
+
+	<select id="getDeptTree" parameterType="Map" resultMap="SysDeptResult">
+		SELECT dp.dept_id,dp.parent_id,dp.dept_name,count(de.dept_id) as is_children
+		from sys_dept dp
+		left join sys_dept de on de.dept_id = dp.dept_id
+		<if test="companyId != null"> AND de.company_id = #{companyId} </if>
+		<if test="companyId != null"> AND dp.company_id = #{companyId} </if>
+		where dp.company_id = #{companyId}
+		<if test="parentId != null"> AND dp.parent_id = #{parentId} </if>
+		<if test="scopeIds != null">
+			<foreach collection="scopeId" item="scopeIds" open="(" separator="," close=")">
+				#{scopeId}
+			</foreach>
+		</if>
+	</select>
+	
+	<select id="checkDeptNameUnique" resultMap="SysDeptResult">
+	    <include refid="selectDeptVo"/>
+		where dept_name=#{deptName} and parent_id = #{parentId} limit 1
+	</select>
+    
+    <insert id="insertDept" parameterType="SysDept">
+ 		insert into sys_dept(
+ 			<if test="deptId != null">dept_id,</if>
+ 			<if test="parentId != null">parent_id,</if>
+ 			<if test="deptName != null and deptName != ''">dept_name,</if>
+			<if test="deptIdPath != null and deptIdPath != ''">dept_id_path,</if>
+			<if test="deptNamePath != null and deptNamePath != ''">dept_name_path,</if>
+ 			<if test="orderNum != null and orderNum != ''">order_num,</if>
+ 			<if test="leader != null and leader != ''">leader,</if>
+ 			<if test="phone != null and phone != ''">phone,</if>
+ 			<if test="email != null and email != ''">email,</if>
+ 			<if test="status != null">status,</if>
+ 			<if test="createBy != null and createBy != ''">create_by,</if>
+			<if test="companyId != null and companyId != ''">company_id,</if>
+ 			create_time
+ 		)values(
+ 			<if test="deptId != null">#{deptId},</if>
+ 			<if test="parentId != null">#{parentId},</if>
+ 			<if test="deptName != null and deptName != ''">#{deptName},</if>
+			<if test="deptIdPath != null and deptIdPath != ''">#{deptIdPath},</if>
+			<if test="deptNamePath != null and deptNamePath != ''">#{deptNamePath},</if>
+ 			<if test="orderNum != null and orderNum != ''">#{orderNum},</if>
+ 			<if test="leader != null and leader != ''">#{leader},</if>
+ 			<if test="phone != null and phone != ''">#{phone},</if>
+ 			<if test="email != null and email != ''">#{email},</if>
+ 			<if test="status != null">#{status},</if>
+ 			<if test="createBy != null and createBy != ''">#{createBy},</if>
+			<if test="companyId != null and companyId != ''">#{companyId},</if>
+ 			sysdate()
+ 		)
+	</insert>
+
+	<insert id="insertDeptAll">
+		insert into sys_dept(
+		dept_id,
+		dept_name,
+		parent_id,
+		order_num,
+		status,
+		is_delete,
+		create_time,
+		update_time,
+		company_id
+		) VALUES
+		<foreach collection="insertData" separator="," item="data">
+			(
+			#{data.deptId},
+			#{data.deptName},
+			#{data.parentId},
+			#{data.orderNum},
+			#{data.status},
+			#{data.isDelete},
+			#{data.createTime},
+			#{data.updateTime},
+			#{data.companyId}
+			)
+		</foreach>
+		on duplicate key update
+		status = values(status),
+		is_delete = values(is_delete)
+	</insert>
+	
+	<update id="updateDept" parameterType="SysDept">
+ 		update sys_dept
+ 		<set>
+ 			<if test="parentId != null">parent_id = #{parentId},</if>
+ 			<if test="deptName != null and deptName != ''">dept_name = #{deptName},</if>
+			<if test="deptIdPath != null and deptIdPath != ''">dept_id_path = #{deptIdPath},</if>
+			<if test="deptNamePath != null and deptNamePath != ''">dept_name_path = #{deptNamePath},</if>
+ 			<if test="orderNum != null and orderNum != ''">order_num = #{orderNum},</if>
+ 			<if test="leader != null">leader = #{leader},</if>
+ 			<if test="phone != null">phone = #{phone},</if>
+ 			<if test="email != null">email = #{email},</if>
+ 			<if test="status != null">status = #{status},</if>
+			<if test="isDelete != null">is_delete = #{isDelete},</if>
+ 			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+ 			update_time = sysdate()
+ 		</set>
+ 		where dept_id = #{deptId} AND company_id = #{companyId}
+	</update>
+
+	<update id="updateDeptStatus" parameterType="SysDept">
+		update sys_dept
+		<set>
+			<if test="statusType != null and statusType == 1">status = 0,</if>
+			<if test="statusType != null and statusType == 2">is_delete = 1,</if>
+			update_time = sysdate()
+		</set>
+		where company_id = #{companyId}
+		<if test="statusType != null and statusType == 1">
+			and is_delete = 0
+		</if>
+		<if test="statusType != null and statusType == 2">
+			and status = 0 and is_delete = 0
+		</if>
+	</update>
+	
+	<update id="updateDeptChildren" parameterType="java.util.List">
+	    update sys_dept set dept_id_path =
+	    <foreach collection="depts" item="item" index="index"
+	        separator=" " open="case dept_id" close="end">
+	        when #{item.deptId} then #{item.deptIdPath}
+	    </foreach>,
+		dept_name_path =
+		<foreach collection="depts" item="item" index="index"
+				 separator=" " open="case dept_name" close="end">
+			when #{item.deptName} then #{item.deptNamePath}
+		</foreach>
+	    where dept_id in
+	    <foreach collection="depts" item="item" index="index"
+	        separator="," open="(" close=")">
+	        #{item.deptId}
+	    </foreach>
+	</update>
+	 
+	<update id="updateDeptStatusNormal" parameterType="String">
+ 	    update sys_dept set status = '0' where dept_id in 
+ 	    <foreach collection="array" item="deptId" open="(" separator="," close=")">
+        	#{deptId}
+        </foreach>
+	</update>
+	
+	<delete id="deleteDeptById" parameterType="String">
+		update sys_dept set is_delete = 2 where dept_id = #{deptId}
+	</delete>
+
+</mapper> 

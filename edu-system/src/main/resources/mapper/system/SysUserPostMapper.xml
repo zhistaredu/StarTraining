@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.system.mapper.SysUserPostMapper">
+    
+    <resultMap type="SysUserPost" id="SysUserPostResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="postId"    column="post_id"    />
+        <result property="type"    column="type"    />
+        <result property="isDelete"    column="is_delete"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="companyName"    column="company_name"    />
+    </resultMap>
+
+    <sql id="selectSysUserPostVo">
+        select id, user_id, user_name, post_id, type, is_delete, company_id, company_name from sys_user_post
+    </sql>
+
+    <select id="selectSysUserPostList" parameterType="Map" resultMap="SysUserPostResult">
+        <include refid="selectSysUserPostVo"/>
+        where company_id = #{companyId}
+        <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+        <if test="postId != null  and postId != ''"> and post_id = #{postId}</if>
+        <if test="type != null  and type != ''"> and type = #{type}</if>
+        <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+    </select>
+
+    <select id="selectSysUserPostCount" parameterType="Map" resultType="int">
+        select COUNT(*) from sys_user_post
+        where company_id = #{companyId}
+        <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+        <if test="postId != null  and postId != ''"> and post_id = #{postId}</if>
+        <if test="type != null  and type != ''"> and type = #{type}</if>
+        <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+    </select>
+    
+    <select id="selectSysUserPostById" parameterType="Map" resultMap="SysUserPostResult">
+        <include refid="selectSysUserPostVo"/>
+        where company_id = #{companyId} and user_id = #{userId} and post_id = #{postId}
+    </select>
+        
+    <insert id="insertSysUserPost" parameterType="SysUserPost" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_user_post
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="postId != null">post_id,</if>
+            <if test="type != null">type,</if>
+            <if test="isDelete != null">is_delete,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="companyName != null">company_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="postId != null">#{postId},</if>
+            <if test="type != null">#{type},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="companyName != null">#{companyName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysUserPost" parameterType="SysUserPost">
+        update sys_user_post
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="postId != null">post_id = #{postId},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="companyName != null">company_name = #{companyName},</if>
+        </trim>
+        where company_id = #{companyId} and user_id = #{userId} and post_id = #{postId}
+    </update>
+
+    <insert id="insertSysUserPostAll">
+        insert into sys_user_post(
+        user_id,
+        user_name,
+        post_id,
+        is_delete,
+        company_id
+        ) VALUES
+        <foreach collection="insertData" separator="," item="data">
+            (
+            #{data.userId},
+            #{data.userName},
+            #{data.postId},
+            #{data.isDelete},
+            #{data.companyId}
+            )
+        </foreach>
+        on duplicate key update
+        is_delete = values(is_delete)
+    </insert>
+
+    <delete id="deleteSysUserPostById" parameterType="Long">
+        delete from sys_user_post where id = #{id}
+    </delete>
+
+    <delete id="deleteSysUserPostByIds" parameterType="String">
+        delete from sys_user_post where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

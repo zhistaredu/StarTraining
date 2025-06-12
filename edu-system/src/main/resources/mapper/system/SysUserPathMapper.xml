@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.system.mapper.SysUserPathMapper">
+    
+    <resultMap type="SysUserPath" id="SysUserPathResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="unionId"    column="union_id"    />
+        <result property="deptIds"    column="dept_ids"    />
+        <result property="userName"    column="user_name"    />
+        <result property="nickName"    column="nick_name"    />
+        <result property="position"    column="position"    />
+        <result property="jobNumber"    column="job_number"    />
+        <result property="email"    column="email"    />
+        <result property="phonenumber"    column="phonenumber"    />
+        <result property="newTime"    column="new_time"    />
+        <result property="sex"    column="sex"    />
+        <result property="avatar"    column="avatar"    />
+        <result property="password"    column="password"    />
+        <result property="status"    column="status"    />
+        <result property="isDelete"    column="is_delete"    />
+        <result property="loginIp"    column="login_ip"    />
+        <result property="loginDate"    column="login_date"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createUserName"    column="create_user_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateUserId"    column="update_user_id"    />
+        <result property="updateUserName"    column="update_user_name"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="companyName"    column="company_name"    />
+    </resultMap>
+
+    <sql id="selectSysUserPathVo">
+        select id, user_id,union_id, dept_ids, user_name, nick_name, position, job_number, email, phonenumber, sex, avatar, password, status, is_delete, login_ip, login_date, create_user_id, create_user_name, create_time, update_user_id, update_user_name, update_time, remark, company_id, company_name from sys_user_path
+    </sql>
+
+    <select id="selectUserPathCount" parameterType="Map" resultType="int">
+        select count(*) from sys_user_path
+        where company_id = #{companyId}
+        <if test="userId != null"> and user_id = #{userId} </if>
+    </select>
+
+    <select id="selectSysUserPathList" parameterType="Map" resultMap="SysUserPathResult">
+        <include refid="selectSysUserPathVo"/>
+        where company_id = #{companyId}
+        <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+        <if test="userIds != null">
+            AND user_id in
+            <foreach collection="userIds" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+        <if test="isDelete != null"> and is_delete = #{isDelete} </if>
+    </select>
+    
+    <select id="selectSysUserPathById" parameterType="Map" resultMap="SysUserPathResult">
+        <include refid="selectSysUserPathVo"/>
+        where company_id = #{companyId}
+        <if test="userId != null"> and user_id = #{userId} </if>
+         limit 1
+    </select>
+        
+    <insert id="insertSysUserPath" parameterType="SysUserPath" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_user_path
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="unionId != null">union_id,</if>
+            <if test="deptIds != null">dept_ids,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="nickName != null">nick_name,</if>
+            <if test="email != null">email,</if>
+            <if test="phonenumber != null">phonenumber,</if>
+            <if test="newTime != null">new_time,</if>
+            <if test="sex != null">sex,</if>
+            <if test="avatar != null">avatar,</if>
+            <if test="password != null">password,</if>
+            <if test="status != null">status,</if>
+            <if test="isDelete != null">is_delete,</if>
+            <if test="loginIp != null">login_ip,</if>
+            <if test="loginDate != null">login_date,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="createUserName != null">create_user_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateUserId != null">update_user_id,</if>
+            <if test="updateUserName != null">update_user_name,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="companyName != null">company_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="unionId != null">#{unionId},</if>
+            <if test="deptIds != null">#{deptIds},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="nickName != null">#{nickName},</if>
+            <if test="email != null">#{email},</if>
+            <if test="phonenumber != null">#{phonenumber},</if>
+            <if test="newTime != null">#{newTime},</if>
+            <if test="sex != null">#{sex},</if>
+            <if test="avatar != null">#{avatar},</if>
+            <if test="password != null">#{password},</if>
+            <if test="status != null">#{status},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+            <if test="loginIp != null">#{loginIp},</if>
+            <if test="loginDate != null">#{loginDate},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateUserId != null">#{updateUserId},</if>
+            <if test="updateUserName != null">#{updateUserName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="companyName != null">#{companyName},</if>
+         </trim>
+    </insert>
+
+    <insert id="insertSysUserPathAll">
+        insert into sys_user_path(
+        user_id,
+        union_id,
+        user_name,
+        dept_ids,
+        dept_names,
+        position,
+        job_number,
+        avatar,
+        status,
+        is_delete,
+        create_time,
+        update_time,
+        company_id
+        ) VALUES
+        <foreach collection="insertData" separator="," item="data">
+            (
+            #{data.userId},
+            #{data.unionId},
+            #{data.userName},
+            #{data.deptIds},
+            #{data.deptNames},
+            #{data.position},
+            #{data.jobNumber},
+            #{data.avatar},
+            #{data.status},
+            #{data.isDelete},
+            #{data.createTime},
+            #{data.updateTime},
+            #{data.companyId}
+            )
+        </foreach>
+        on duplicate key update
+        dept_ids = values(dept_ids),
+        dept_names = values(dept_names),
+        position = values(position),
+        job_number = values(job_number),
+        avatar = values(avatar),
+        status = values(status),
+        is_delete = values(is_delete)
+    </insert>
+
+    <update id="updateSysUserPath" parameterType="SysUserPath">
+        update sys_user_path
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="newTime != null and newTime != ''">new_time = #{newTime},</if>
+            <if test="avatar != null and avatar != ''">avatar = #{avatar},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+        </trim>
+        where user_id = #{userId} AND company_id = #{companyId}
+    </update>
+
+    <update id="updateSysUserPathStatus" parameterType="SysUserPath">
+        update sys_user_path
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="statusType != null and statusType == 1">status = 0,</if>
+            <if test="statusType != null and statusType == 2">is_delete = 1,</if>
+        </trim>
+        where company_id = #{companyId}
+        <if test="statusType != null and statusType == 1">
+            and is_delete = 0
+        </if>
+        <if test="statusType != null and statusType == 2">
+            and status = 0 and is_delete = 0
+        </if>
+    </update>
+
+    <delete id="deleteSysUserPathById" parameterType="Map">
+        delete from sys_user_path
+        where company_id = #{companyId}
+        <if test="userId != null"> and user_id = #{userId} </if>
+    </delete>
+
+    <delete id="deleteSysUserPathByIds" parameterType="String">
+        delete from sys_user_path where company_id = #{companyId} user_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

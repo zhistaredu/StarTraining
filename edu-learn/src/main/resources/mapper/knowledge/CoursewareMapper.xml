@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.knowledge.mapper.CoursewareMapper">
+    
+    <resultMap type="Courseware" id="CoursewareResult">
+        <result property="id"    column="id"    />
+        <result property="uuid"    column="uuid"    />
+        <result property="title"    column="title"    />
+        <result property="type"    column="type"    />
+        <result property="courseId"    column="course_id"    />
+        <result property="weight"    column="weight"    />
+        <result property="isDelete"    column="is_delete"    />
+        <result property="length"    column="length"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+        <result property="companyId"    column="company_id"    />
+    </resultMap>
+
+    <resultMap type="LessonTypeCount" id="LessonTypeCountResult">
+        <result property="video"    column="video"    />
+        <result property="document"    column="document"    />
+    </resultMap>
+
+    <resultMap type="CoursewareJoinUser" id="CoursewareJoinUserResult">
+        <result property="uuid"    column="uuid"    />
+        <result property="title"    column="title"    />
+        <result property="type"    column="type"    />
+        <result property="courseId"    column="course_id"    />
+        <result property="weight"    column="weight"    />
+        <result property="length"    column="length"    />
+        <result property="progress"    column="progress"    />
+    </resultMap>
+
+    <sql id="selectCoursewareVo">
+        select id, uuid, title, type, course_id, weight, is_delete, length, create_time, update_time, create_user_id, update_user_id, company_id from courseware
+    </sql>
+
+    <select id="selectCoursewareList" parameterType="Map" resultMap="CoursewareResult">
+        <include refid="selectCoursewareVo"/>
+        where company_id = #{companyId}
+        <if test="type != null  and type != ''"> and type = #{type}</if>
+        <if test="courseId != null  and courseId != ''"> and course_id = #{courseId}</if>
+        <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+         order by weight ASC
+    </select>
+
+    <select id="selectCoursewareJoinUserList" parameterType="Map" resultMap="CoursewareJoinUserResult">
+        SELECT
+            c.course_id,
+            c.uuid,
+            c.title,
+            c.type,
+            c.weight,
+            c.length,
+            ifnull(cl.progress, 0) AS progress
+        FROM
+            courseware c
+                LEFT JOIN courseware_user cl ON cl.company_id = c.company_id
+                AND cl.course_id = c.course_id
+                AND cl.courseware_id = c.uuid
+                AND cl.user_id = #{userId}
+                AND cl.stage_id = #{stageId}
+                AND cl.source_id = #{sourceId}
+        WHERE
+            c.company_id = #{companyId}
+          AND c.course_id = #{courseId}
+        order by c.weight ASC
+    </select>
+
+    <select id="selectLessonInfoWeight" parameterType="Map" resultType="int">
+        select weight from courseware
+        where company_id = #{companyId} and is_delete = 0
+        <if test="uuid != null  and uuid != ''"> and uuid = #{uuid}</if>
+        <if test="courseId != null  and courseId != ''"> and course_id = #{courseId}</if>
+        order by weight desc
+    </select>
+
+    <select id="selectCoursewareCount" parameterType="Map" resultType="int">
+        select count('*') from courseware
+        where company_id = #{companyId}
+        <if test="type != null  and type != ''"> and type = #{type}</if>
+        <if test="courseId != null  and courseId != ''"> and course_id = #{courseId}</if>
+        <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+    </select>
+
+    <select id="selectCoursewareTypeCount" parameterType="Map" resultMap="LessonTypeCountResult">
+        select count('*') from courseware
+        where company_id = #{companyId}
+        <if test="type != null  and type != ''"> and type = #{type}</if>
+        <if test="courseId != null  and courseId != ''"> and course_id = #{courseId}</if>
+        <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+    </select>
+
+    <select id="selectCoursewareLength" parameterType="Map" resultType="int">
+        select ifnull(SUM(length),0) from courseware
+        where company_id = #{companyId}
+        <if test="type != null  and type != ''"> and type = #{type}</if>
+        <if test="courseId != null  and courseId != ''"> and course_id = #{courseId}</if>
+        <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+    </select>
+    
+    <select id="selectCoursewareById" parameterType="Map" resultMap="CoursewareResult">
+        <include refid="selectCoursewareVo"/>
+        where company_id = #{companyId}
+        <if test="uuid != null  and uuid != ''"> and uuid = #{uuid}</if>
+        <if test="courseId != null  and courseId != ''"> and course_id = #{courseId}</if>
+        <if test="weight != null"> and weight = #{weight}</if>
+        <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+    </select>
+        
+    <insert id="insertCourseware" parameterType="Courseware" useGeneratedKeys="true" keyProperty="id">
+        insert into courseware
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="title != null">title,</if>
+            <if test="type != null">type,</if>
+            <if test="courseId != null">course_id,</if>
+            <if test="weight != null">weight,</if>
+            <if test="isDelete != null">is_delete,</if>
+            <if test="length != null">length,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="updateUserId != null">update_user_id,</if>
+            <if test="companyId != null">company_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="title != null">#{title},</if>
+            <if test="type != null">#{type},</if>
+            <if test="courseId != null">#{courseId},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+            <if test="length != null">#{length},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="updateUserId != null">#{updateUserId},</if>
+            <if test="companyId != null">#{companyId},</if>
+         </trim>
+    </insert>
+
+    <insert id="insertCoursewareAll">
+        insert into courseware(
+        uuid,
+        title,
+        type,
+        course_id,
+        weight,
+        is_delete,
+        length,
+        create_time,
+        update_time,
+        create_user_id,
+        update_user_id,
+        company_id
+        ) VALUES
+        <foreach collection="insertData" separator="," item="data">
+            (
+            #{data.uuid},
+            #{data.title},
+            #{data.type},
+            #{data.courseId},
+            #{data.weight},
+            #{data.isDelete},
+            #{data.length},
+            #{data.createTime},
+            #{data.updateTime},
+            #{data.createUserId},
+            #{data.updateUserId},
+            #{data.companyId}
+            )
+        </foreach>
+        on duplicate key update
+        weight = values(weight),
+        is_delete = values(is_delete)
+    </insert>
+
+    <update id="updateCourseware" parameterType="Courseware">
+        update courseware
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null">title = #{title},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="courseId != null">course_id = #{courseId},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+            <if test="length != null and length > 0">length = #{length},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where company_id = #{companyId}
+        <if test="uuid != null  and uuid != ''"> and uuid = #{uuid}</if>
+        <if test="courseId != null  and courseId != ''"> and course_id = #{courseId}</if>
+    </update>
+
+    <delete id="deleteCoursewareById" parameterType="Map">
+        delete from courseware where company_id = #{companyId} AND uuid = #{uuid}
+    </delete>
+
+    <delete id="deleteCoursewareByIds" parameterType="String">
+        delete from courseware where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

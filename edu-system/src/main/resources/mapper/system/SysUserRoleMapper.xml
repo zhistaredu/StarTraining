@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.system.mapper.SysUserRoleMapper">
+
+	<resultMap type="SysUserRole" id="SysUserRoleResult">
+		<result property="userId"     column="user_id"      />
+		<result property="userName"     column="user_name"      />
+		<result property="roleId"     column="role_id"      />
+		<result property="roleType"     column="role_type"      />
+		<result property="scopeType"     column="scope_type"      />
+		<result property="scopeIds"     column="scope_ids"      />
+		<result property="scopeNames"     column="scope_names"      />
+		<result property="companyId"     column="company_id"      />
+		<result property="companyName"     column="company_name"      />
+	</resultMap>
+
+	<sql id="selectSysUserRoleVo">
+        select user_id, role_id,role_type,scope_type,scope_ids,scope_names, company_id, company_name from sys_user_role
+    </sql>
+
+	<select id="selectSysUserRoleByList" parameterType="Map" resultMap="SysUserRoleResult">
+		select ur.user_id, ur.role_id,ur.role_type,ur.scope_type,ur.scope_ids,ur.scope_names, ur.company_id, up.user_name from sys_user_role ur left join sys_user up ON up.user_id = ur.user_id AND up.company_id = ur.company_id
+		where ur.company_id = #{companyId} and up.company_id = #{companyId} and up.is_delete = 0 and ur.is_delete = 0
+		<if test="roleId != null and roleId != ''">
+			AND ur.role_id = #{roleId}
+		</if>
+		<if test="userId != null and userId != ''">
+			AND ur.user_id = #{userId}
+		</if>
+		GROUP BY ur.user_id
+	</select>
+
+	<select id="selectSysUserRoleList" parameterType="Map" resultMap="SysUserRoleResult">
+		<include refid="selectSysUserRoleVo"/>
+		where company_id = #{companyId}
+		<if test="roleId != null and roleId != ''">
+			AND role_id = #{roleId}
+		</if>
+		<if test="roleType != null and roleType != ''">
+			AND role_type = #{roleType}
+		</if>
+		<if test="isDelete != null">
+			AND is_delete = #{isDelete}
+		</if>
+		<if test="userId != null and userId != ''">
+			AND user_id = #{userId}
+		</if>
+	</select>
+
+	<select id="selectSysUserRoleById" parameterType="Map" resultMap="SysUserRoleResult">
+		<include refid="selectSysUserRoleVo"/>
+		where company_id = #{companyId}
+		<if test="roleId != null and roleId != ''">
+			AND role_id = #{roleId}
+		</if>
+		<if test="roleType != null and roleType != ''">
+			AND role_type = #{roleType}
+		</if>
+		<if test="isDelete != null">
+			AND is_delete = #{isDelete}
+		</if>
+		<if test="userId != null and userId != ''">
+			AND user_id = #{userId}
+		</if>
+		limit 1
+	</select>
+
+	<insert id="insertUserRoleAll">
+		insert into sys_user_role(
+		user_id,
+		role_id,
+		role_type,
+		is_delete,
+		company_id
+		) VALUES
+		<foreach collection="insertData" separator="," item="data">
+			(
+			#{data.userId},
+			#{data.roleId},
+			#{data.roleType},
+			#{data.isDelete},
+			#{data.companyId}
+			)
+		</foreach>
+		on duplicate key update
+		is_delete = values(is_delete)
+	</insert>
+
+	<delete id="deleteUserRoleByUserId" parameterType="String">
+		delete from sys_user_role where user_id=#{userId}
+	</delete>
+	
+	<select id="countUserRoleByRoleId" resultType="Integer">
+	    select count(1) from sys_user_role where role_id=#{roleId}  
+	</select>
+	
+	<delete id="deleteUserRole" parameterType="String">
+ 		delete from sys_user_role where user_id in
+ 		<foreach collection="array" item="userId" open="(" separator="," close=")">
+ 			#{userId}
+        </foreach> 
+ 	</delete>
+	
+	<insert id="batchUserRole">
+		insert into sys_user_role(user_id, role_id) values
+		<foreach item="item" index="index" collection="list" separator=",">
+			(#{item.userId},#{item.roleId})
+		</foreach>
+	</insert>
+
+	<update id="updateUserRole" parameterType="Map">
+		update sys_user_role
+		<set>
+			<if test="scopeType != null and scopeType != ''">scope_type = #{scopeType},</if>
+			<if test="isDelete != null">is_delete = #{isDelete},</if>
+			<if test="scopeIds != null and scopeIds != ''">scope_ids = #{scopeIds},</if>
+			update_time = sysdate()
+		</set>
+		where company_id = #{companyId}
+		<if test="userId != null and userId != ''">
+			AND user_id = #{userId}
+		</if>
+		<if test="roleType != null and roleType != ''">
+			AND role_type = #{roleType}
+		</if>
+		<if test="roleId != null and roleId != ''">
+			AND role_id = #{roleId}
+		</if>
+	</update>
+
+	<delete id="deleteUserRoleInfo" parameterType="SysUserRole">
+		delete from sys_user_role where user_id=#{userId} and role_id=#{roleId}
+	</delete>
+	
+	<delete id="deleteUserRoleInfos">
+	    delete from sys_user_role where role_id=#{roleId} and user_id in
+ 	    <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+ 	        #{userId}
+            </foreach> 
+	</delete>
+</mapper> 

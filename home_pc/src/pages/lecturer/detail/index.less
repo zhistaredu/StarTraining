@@ -1,0 +1,333 @@
+.lecturer-detail-box {
+  width: 100%;
+  height: 100%;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  @media screen and (max-width: 1300px) {
+    .lecturer-data {
+      width: 230px;
+    }
+
+    .lecturer-course {
+      width: 760px;
+      height: 100%;
+      box-sizing: border-box;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+  }
+
+  @media screen and (min-width: 1301px) {
+    .lecturer-data {
+      width: 280px;
+    }
+
+    .lecturer-course {
+      width: 910px;
+      height: 100%;
+      box-sizing: border-box;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+  }
+
+  .lecturer-data {
+    height: 100%;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 30px;
+    box-sizing: border-box;
+
+    .avatar {
+      width: 100px;
+      height: 100px;
+      position: relative;
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+      .sex{
+        position: absolute;
+        font-size: 20px;
+        bottom: 0;
+        right: 0;
+        width: 20px;
+        height: 20px;
+        background-color: #fff;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        &.man{
+          background-color: #1677ff;
+        }
+        &.woman {
+          background-color: #f5222d;
+        }
+      }
+    }
+
+    .name {
+      font-size: 16px;
+      color: #333;
+      margin-top: 30px;
+    }
+
+    .people {
+      font-size: 14px;
+      color: #5881db;
+      margin-top: 20px;
+    }
+
+    .bottom {
+      width: 100%;
+      padding: 0 10px;
+      box-sizing: border-box;
+      font-size: 14px;
+      color: #333;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+      div {
+        margin: 0 10px;
+      }
+    }
+
+    .desc {
+      width: 100%;
+      margin-top: 30px;
+      border-top: 1px solid #eee;
+      padding: 15px 15px;
+      box-sizing: border-box;
+
+      div.tit {
+        margin-bottom: 10px;
+        font-size: 15px;
+        color: #333;
+      }
+
+      .cont {
+        line-height: 22px;
+        font-size: 14px;
+        color: #333;
+      }
+    }
+  }
+
+  .lecturer-course {
+    .top-filter {
+      width: 100%;
+      height: 50px;
+      padding: 0 10px;
+      box-sizing: border-box;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #eee;
+
+      .status {
+        display: flex;
+        align-items: center;
+        padding-left: 20px;
+        box-sizing: border-box;
+
+        span.tit {
+          font-size: 14px;
+        }
+      }
+
+      .search {
+        width: 200px;
+        height: 36px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        overflow: hidden;
+        border: 1px solid #5881db;
+
+        input {
+          border: none;
+          width: 120px;
+        }
+
+        span {
+          height: 36px;
+          line-height: 36px;
+          white-space: nowrap;
+          font-size: 14px;
+          padding: 0 10px;
+          box-sizing: border-box;
+          background: #5881db;
+          color: #fff;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .bottom-block {
+      background: #fff;
+    }
+
+    .course-list {
+      width: 100%;
+      height: calc(100% - 100px);
+      overflow-y: auto;
+      display: flex;
+      align-content: flex-start;
+      flex-wrap: wrap;
+      padding: 10px 0 0;
+      box-sizing: border-box;
+
+      @media screen and (max-width: 1300px) {
+        .course-item {
+          width: 247px;
+
+          .img {
+            height: 136px;
+          }
+        }
+      }
+
+      @media screen and (min-width: 1301px) {
+        .course-item {
+          width: 297px;
+
+          .img {
+            height: 156px;
+          }
+        }
+      }
+
+      .nodata {
+        width: 100%;
+        height: 500px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        img {
+          width: 300px;
+        }
+
+        div {
+          line-height: 50px;
+          font-size: 16px;
+          color: #999;
+        }
+      }
+
+      .course-item {
+        padding: 8px;
+        box-sizing: border-box;
+
+        &:hover {
+          img {
+            transform-origin: 50% 50%;
+            transform: scale(1.1);
+            -webkit-transform: scale(1.1);
+          }
+        }
+
+        .course-cont {
+          width: 100%;
+          border: 1px solid #f5f5f5;
+          background-color: #fff;
+          border-radius: 10px;
+          cursor: pointer;
+          overflow: hidden;
+
+          .img {
+            width: 100%;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              transition: all 0.3s;
+              -webkit-transition: all 0.3s;
+            }
+
+            .type {
+              position: absolute;
+              top: 10px;
+              left: 10px;
+              min-width: 50px;
+              height: 24px;
+              background: rgba(0, 0, 0, 0.3);
+              border-radius: 4px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              padding: 0 6px;
+              box-sizing: border-box;
+
+              i {
+                width: 4px;
+                height: 4px;
+                background: #b82121;
+                border-radius: 50%;
+              }
+
+              i.active {
+                background: #3cbb4d;
+              }
+
+              span {
+                font-size: 12px;
+                color: #fff;
+                // margin-left: 4px;
+              }
+            }
+          }
+
+          .name {
+            width: 100%;
+            padding: 0 10px;
+            box-sizing: border-box;
+            line-height: 40px;
+            height: 40px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 14px;
+            color: #333;
+          }
+
+          .people {
+            padding: 0 10px;
+            box-sizing: border-box;
+            font-size: 12px;
+            color: #999;
+            line-height: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+
+            i.iconfont {
+              font-size: 12px;
+              margin-right: 5px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.system.mapper.SettingMapper">
+    
+    <resultMap type="Setting" id="SettingResult">
+        <result property="id"    column="id"    />
+        <result property="sync"    column="sync"    />
+        <result property="companyId"    column="company_id"    />
+    </resultMap>
+
+    <sql id="selectSettingVo">
+        select id, sync, company_id from setting
+    </sql>
+
+    <select id="selectSettingList" parameterType="Map" resultMap="SettingResult">
+        <include refid="selectSettingVo"/>
+        where company_id = #{companyId}
+    </select>
+    
+    <select id="selectSettingById" parameterType="Map" resultMap="SettingResult">
+        <include refid="selectSettingVo"/>
+        where company_id = #{companyId}
+    </select>
+        
+    <insert id="insertSetting" parameterType="Setting" useGeneratedKeys="true" keyProperty="id">
+        insert into setting
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sync != null">sync,</if>
+            <if test="companyId != null">company_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sync != null">#{sync},</if>
+            <if test="companyId != null">#{companyId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSetting" parameterType="Setting">
+        update setting
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sync != null">sync = #{sync},</if>
+            <if test="companyId != null">company_id = #{companyId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSettingById" parameterType="Long">
+        delete from setting where id = #{id}
+    </delete>
+
+    <delete id="deleteSettingByIds" parameterType="String">
+        delete from setting where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

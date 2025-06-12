@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.system.mapper.LectorMapper">
+    
+    <resultMap type="Lector" id="LectorResult">
+        <result property="id"    column="id"    />
+        <result property="lectorId"    column="lector_id"    />
+        <result property="lectorName"    column="lector_name"    />
+        <result property="lectorAvatar"    column="lector_avatar"    />
+        <result property="lectorGrade"    column="lector_grade"    />
+        <result property="lectorType"    column="lector_type"    />
+        <result property="contactWay"    column="contact_way"    />
+        <result property="synopsis"    column="synopsis"    />
+        <result property="sex"    column="sex"    />
+        <result property="status"    column="status"    />
+        <result property="isDelete"    column="is_delete"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+        <result property="companyId"    column="company_id"    />
+    </resultMap>
+
+    <sql id="selectLectorVo">
+        select l.id, l.lector_id, l.lector_name, l.lector_grade, l.lector_type, l.contact_way, l.synopsis, l.sex, l.status, l.is_delete, l.create_time, l.update_time, l.create_user_id, l.update_user_id, l.company_id,u.avatar AS lector_avatar from lector AS l
+        LEFT JOIN sys_user AS u ON l.lector_id = u.user_id AND l.company_id = u.company_id AND u.company_id = #{companyId}
+    </sql>
+
+    <select id="selectLectorList" parameterType="Map" resultMap="LectorResult">
+        <include refid="selectLectorVo"/>
+        where l.company_id = #{companyId} AND l.is_delete = 0
+        <if test="status != null "> and l.status = #{status}</if>
+        <if test="lectorType != null  and lectorType != ''"> and l.lector_type = #{lectorType}</if>
+        <if test="lectorGrade != null  and lectorGrade != ''"> and l.lector_grade = #{lectorGrade}</if>
+        order by l.id DESC
+    </select>
+    
+    <select id="selectLectorById" parameterType="Map" resultMap="LectorResult">
+        <include refid="selectLectorVo"/>
+        where l.company_id = #{companyId} and l.lector_id = #{lectorId}
+    </select>
+        
+    <insert id="insertLector" parameterType="Lector" useGeneratedKeys="true" keyProperty="id">
+        insert into lector
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="lectorId != null">lector_id,</if>
+            <if test="lectorName != null">lector_name,</if>
+            <if test="lectorAvatar != null">lector_avatar,</if>
+            <if test="lectorGrade != null">lector_grade,</if>
+            <if test="lectorType != null">lector_type,</if>
+            <if test="contactWay != null">contact_way,</if>
+            <if test="synopsis != null">synopsis,</if>
+            <if test="sex != null">sex,</if>
+            <if test="status != null">status,</if>
+            <if test="isDelete != null">is_delete,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="updateUserId != null">update_user_id,</if>
+            <if test="companyId != null">company_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="lectorId != null">#{lectorId},</if>
+            <if test="lectorName != null">#{lectorName},</if>
+            <if test="lectorAvatar != null">#{lectorAvatar},</if>
+            <if test="lectorGrade != null">#{lectorGrade},</if>
+            <if test="lectorType != null">#{lectorType},</if>
+            <if test="contactWay != null">#{contactWay},</if>
+            <if test="synopsis != null">#{synopsis},</if>
+            <if test="sex != null">#{sex},</if>
+            <if test="status != null">#{status},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="updateUserId != null">#{updateUserId},</if>
+            <if test="companyId != null">#{companyId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLector" parameterType="Lector">
+        update lector
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="lectorName != null">lector_name = #{lectorName},</if>
+            <if test="lectorAvatar != null">lector_avatar = #{lectorAvatar},</if>
+            <if test="lectorGrade != null">lector_grade = #{lectorGrade},</if>
+            <if test="lectorType != null">lector_type = #{lectorType},</if>
+            <if test="contactWay != null">contact_way = #{contactWay},</if>
+            <if test="synopsis != null">synopsis = #{synopsis},</if>
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateUserId != null">update_user_id = #{updateUserId},</if>
+        </trim>
+        where company_id = #{companyId} and lector_id = #{lectorId}
+    </update>
+
+    <delete id="deleteLectorById" parameterType="Long">
+        delete from lector where id = #{id}
+    </delete>
+
+    <delete id="deleteLectorByIds" parameterType="String">
+        delete from lector where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

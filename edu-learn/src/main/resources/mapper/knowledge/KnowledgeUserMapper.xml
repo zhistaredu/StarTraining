@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.knowledge.mapper.KnowledgeUserMapper">
+    
+    <resultMap type="KnowledgeUser" id="CourseUserResult">
+        <result property="targetId"    column="target_id"    />
+        <result property="targetTitle"    column="target_title"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="isDelete"    column="is_delete"    />
+        <result property="coursewareNum"    column="courseware_num"    />
+        <result property="coursewareFinishNum"    column="courseware_finish_num"    />
+        <result property="progress"    column="progress"    />
+        <result property="learnStatus"    column="learn_status"    />
+        <result property="learnTime"    column="learn_time"    />
+        <result property="finishTime"    column="finish_time"    />
+        <result property="publishTime"    column="publish_time"    />
+        <result property="source"    column="source"    />
+        <result property="sourceId"    column="source_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="companyId"    column="company_id"    />
+    </resultMap>
+
+    <sql id="selectCourseUserVo">
+        select target_id, target_title, user_id, user_name, is_delete, courseware_num, courseware_finish_num, progress, learn_status,learn_time, finish_time, publish_time, source, source_id, create_time, update_time, company_id from knowledge_user
+    </sql>
+
+    <select id="selectCourseUserList" parameterType="Map" resultMap="CourseUserResult">
+        <include refid="selectCourseUserVo"/>
+        where company_id = #{companyId} and target_id = #{targetId}
+        <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+        <if test="sourceId != null  and sourceId != ''"> and source_id = #{sourceId}</if>
+        <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+        <if test="learnStatus != null  and learnStatus != ''"> and learn_status = #{learnStatus}</if>
+    </select>
+
+    <select id="selectCourseUserCount" parameterType="Map" resultType="int">
+        select count(*) from knowledge_user
+        where company_id = #{companyId} and target_id = #{targetId}
+        <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+        <if test="sourceId != null  and sourceId != ''"> and source_id = #{sourceId}</if>
+        <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+        <if test="learnStatus != null  and learnStatus != ''"> and learn_status = #{learnStatus}</if>
+    </select>
+
+    <select id="selectCourseUserSum" parameterType="Map" resultType="int">
+        select ifnull(SUM(progress),0) from knowledge_user
+        where company_id = #{companyId}
+        <if test="targetId != null  and targetId != ''"> and target_id = #{targetId}</if>
+        <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+        <if test="sourceId != null  and sourceId != ''"> and source_id = #{sourceId}</if>
+        <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+        <if test="targetIds != null  and targetIds != ''">
+            and target_id in
+            <foreach item="id" collection="targetIds" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+        <if test="learnStatus != null  and learnStatus != ''"> and learn_status = #{learnStatus}</if>
+    </select>
+    
+    <select id="selectCourseUserById" parameterType="Map" resultMap="CourseUserResult">
+        <include refid="selectCourseUserVo"/>
+        where company_id = #{companyId} and target_id = #{targetId} and user_id = #{userId}
+        <if test="sourceId != null  and sourceId != ''"> and source_id = #{sourceId}</if>
+        <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+    </select>
+        
+    <insert id="insertCourseUser" parameterType="KnowledgeUser" useGeneratedKeys="true" keyProperty="id">
+        insert into knowledge_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="targetId != null">target_id,</if>
+            <if test="targetTitle != null">target_title,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="isDelete != null">is_delete,</if>
+            <if test="coursewareNum != null">courseware_num,</if>
+            <if test="coursewareFinishNum != null">courseware_finish_num,</if>
+            <if test="progress != null">progress,</if>
+            <if test="learnStatus != null">learn_status,</if>
+            <if test="learnTime != null">learn_time,</if>
+            <if test="finishTime != null">finish_time,</if>
+            <if test="publishTime != null">publish_time,</if>
+            <if test="source != null">source,</if>
+            <if test="sourceId != null">source_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="companyId != null">company_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="targetId != null">#{targetId},</if>
+            <if test="targetTitle != null">#{targetTitle},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+            <if test="coursewareNum != null">#{coursewareNum},</if>
+            <if test="coursewareFinishNum != null">#{coursewareFinishNum},</if>
+            <if test="progress != null">#{progress},</if>
+            <if test="learnStatus != null">#{learnStatus},</if>
+            <if test="learnTime != null">#{learnTime},</if>
+            <if test="finishTime != null">#{finishTime},</if>
+            <if test="publishTime != null">#{publishTime},</if>
+            <if test="source != null">#{source},</if>
+            <if test="sourceId != null">#{sourceId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="companyId != null">#{companyId},</if>
+         </trim>
+    </insert>
+
+    <insert id="insertCourseUserAll">
+        insert into knowledge_user
+        (
+            target_id,
+            target_title,
+            user_id,
+            user_name,
+            is_delete,
+            create_time,
+            update_time,
+            company_id
+        ) VALUES
+        <foreach collection="insertData" separator="," item="data">
+            (
+                #{data.targetId},
+                #{data.targetTitle},
+                #{data.userId},
+                #{data.userName},
+                #{data.isDelete},
+                #{data.createTime},
+                #{data.updateTime},
+                #{data.companyId}
+            )
+        </foreach>
+        on duplicate key update
+        update_time = values(update_time),
+        is_delete = values(is_delete)
+    </insert>
+
+    <update id="updateCourseUser" parameterType="KnowledgeUser">
+        update knowledge_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+            <if test="coursewareNum != null and coursewareNum > 0">courseware_num = #{coursewareNum},</if>
+            <if test="coursewareFinishNum != null and coursewareFinishNum > 0">courseware_finish_num = #{coursewareFinishNum},</if>
+            <if test="progress != null and progress > 0">progress = #{progress},</if>
+            <if test="learnStatus != null and learnStatus != ''">learn_status = #{learnStatus},</if>
+            <if test="learnTime != null and learnTime != ''">learn_time = #{learnTime},</if>
+            <if test="finishTime != null and finishTime != ''">finish_time = #{finishTime},</if>
+            <if test="updateTime != null and updateTime != ''">update_time = #{updateTime},</if>
+        </trim>
+        where company_id = #{companyId} AND target_id = #{targetId}
+        <if test="userId != null and userId != ''"> and user_id = #{userId}</if>
+        <if test="sourceId != null  and sourceId != ''"> and source_id = #{sourceId}</if>
+    </update>
+
+    <update id="deleteCourseUser" parameterType="KnowledgeUser">
+        update knowledge_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+        </trim>
+        where company_id = #{companyId} AND target_id = #{targetId}
+    </update>
+
+    <delete id="deleteCourseUserById" parameterType="Long">
+        delete from knowledge_user where id = #{id}
+    </delete>
+
+    <delete id="deleteCourseUserByIds" parameterType="String">
+        delete from knowledge_user where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

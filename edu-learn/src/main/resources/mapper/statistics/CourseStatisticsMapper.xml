@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.statistics.mapper.CourseStatisticsMapper">
+
+    <resultMap type="CourseUserReport" id="courseUserReportResult">
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="deptNames"    column="dept_names"    />
+        <result property="targetId"    column="target_id"    />
+        <result property="targetTitle"    column="target_title"    />
+        <result property="position"    column="position"    />
+        <result property="jobNumber"    column="job_number"    />
+        <result property="progress"    column="progress"    />
+        <result property="learnStatus"    column="learn_status"    />
+        <result property="learnTime"    column="learn_time"    />
+        <result property="deptUserNum"    column="dept_user_num"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="finishTime"    column="finish_time"    />
+        <result property="coursewareId"    column="courseware_id"    />
+        <result property="lessonType"    column="lesson_type"    />
+        <result property="coursewareTitle"    column="courseware_title"    />
+        <result property="display"    column="display"    />
+        <result property="lessonProgress"    column="lesson_progress"    />
+        <result property="lessonFinishTime"    column="lesson_finish_time"    />
+        <result property="lessonStatus"    column="lesson_status"    />
+        <result property="isDelete"    column="is_delete"    />
+    </resultMap>
+
+    <resultMap type="CourseDeptReport" id="courseDeptReportResult">
+        <result property="deptName"    column="dept_name"    />
+        <result property="deptNamePath"    column="dept_name_path"    />
+        <result property="learnNum"    column="learn_num"    />
+        <result property="learnTime"    column="learn_time"    />
+        <result property="deptUserNum"    column="dept_user_num"    />
+        <result property="finishedNum"    column="finished_num"    />
+        <result property="requiredNum"    column="required_num"    />
+        <result property="requiredFinishNum"    column="required_finish_num"    />
+        <result property="electiveNum"    column="elective_num"    />
+        <result property="electiveFinishNum"    column="elective_finish_num"    />
+    </resultMap>
+
+    <select id="getCourseUserStatistics" parameterType="Map" resultMap="courseUserReportResult">
+        SELECT
+            du.user_name,
+            du.user_id,
+            du.dept_names,
+            du.position,
+            du.job_number,
+            cu.target_id AS course_id,
+            cu.target_title AS course_title,
+            cu.create_time,
+            cu.progress,
+            cu.learn_status,
+            cu.learn_time,
+            cu.finish_time
+        FROM
+            knowledge_user cu
+        INNER JOIN sys_user du ON cu.user_id = du.user_id
+            AND du.company_id = #{companyId} AND du.is_delete = 0
+        WHERE
+            cu.company_id = #{companyId}
+            AND cu.target_id = #{targetId}
+            AND cu.is_delete = 0
+    </select>
+
+    <select id="getCourseDeptStatistics" parameterType="Map" resultMap="courseDeptReportResult">
+        SELECT
+            MAX(d.dept_name) AS dept_name,
+            MAX(d.dept_name_path) AS dept_name_path,
+            COUNT(DISTINCT u.user_id) AS dept_user_num,
+            COUNT(DISTINCT cu.id) AS learn_num,
+            COUNT(
+                DISTINCT
+                IF (
+                    cu.learn_status = 'finished',
+                    TRUE,
+                    NULL
+                )
+            ) AS finished_num,
+            ifnull(SUM(cu.learn_time), 0) AS learn_time
+        FROM
+            sys_dept d
+        LEFT JOIN sys_user u ON u.company_id = d.company_id
+            AND u.dept_id = d.dept_id
+            AND u.company_id = #{companyId}
+        LEFT JOIN knowledge_user cu ON cu.company_id = u.company_id
+            AND cu.user_id = u.user_id
+            AND cu.target_id = #{targetId}
+            AND cu.is_delete = 0
+            AND cu.company_id = #{companyId}
+        WHERE
+        d.is_delete = 0
+        AND d.company_id = #{companyId}
+        GROUP BY d.dept_id
+    </select>
+
+</mapper>

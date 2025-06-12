@@ -1,0 +1,71 @@
+.el-form-item {
+  /deep/.ql-color-picker {
+    svg {
+      position: relative;
+      //top: -7px;
+    }
+  }
+}
+.exam-editor {
+  .quill-editor {
+    border: 1px solid #d7dce5;
+    border-radius: 4px;
+    .ql-toolbar {
+      display: flex;
+      .ql-formats {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        flex: 0 0 28px;
+        margin-right: 0;
+        font-size: 0;
+        & > * {
+          justify-content: center;
+          align-items: center;
+        }
+        .ql-picker-label {
+          display: flex;
+          flex-direction: column;
+          svg {
+            justify-content: center;
+            align-items: center;
+          }
+        }
+        svg {
+          opacity: 0.5;
+        }
+      }
+      &.ql-snow {
+        border: none;
+        padding: 4px 8px;
+      }
+    }
+    .ql-container {
+      &.ql-snow {
+        border: none;
+      }
+    }
+    .ql-editor {
+      border-top: 1px solid #d7dce5;
+      padding: 7px 0;
+      margin: 0 12px;
+      border-top: 1px solid #d7dce5;
+      &.ql-blank {
+        padding: 7px 0;
+        margin: 0 12px;
+        border-top: 1px solid #d7dce5;
+        &::before {
+          font-style: normal;
+          color: #d7dce5;
+        }
+      }
+    }
+  }
+}
+.el-form-item.is-error {
+  .exam-editor {
+    .quill-editor {
+      border-color: red;
+    }
+  }
+}

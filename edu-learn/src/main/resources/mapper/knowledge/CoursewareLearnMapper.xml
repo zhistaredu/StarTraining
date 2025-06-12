@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.knowledge.mapper.CoursewareLearnMapper">
+    
+    <resultMap type="CoursewareLearn" id="CoursewareLearnResult">
+        <result property="id"    column="id"    />
+        <result property="eventId"    column="event_id"    />
+        <result property="courseId"    column="course_id"    />
+        <result property="coursewareId"    column="courseware_id"    />
+        <result property="coursewareTitle"    column="courseware_title"    />
+        <result property="stageId"    column="stage_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="finishTime"    column="finish_time"    />
+        <result property="learnTime"    column="learn_time"    />
+        <result property="progressBar"    column="progress_bar"    />
+        <result property="length"    column="length"    />
+        <result property="progress"    column="progress"    />
+        <result property="source"    column="source"    />
+        <result property="sourceId"    column="source_id"    />
+        <result property="isDelete"    column="is_delete"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="companyId"    column="company_id"    />
+    </resultMap>
+
+    <resultMap type="LessonLearnScreenVo" id="LessonLearnScreenResult">
+        <result property="count"    column="count"    />
+        <result property="date"    column="date"    />
+    </resultMap>
+
+    <sql id="selectCoursewareLearnVo">
+        select id, event_id, course_id, courseware_id, courseware_title,stage_id, user_id, user_name, start_time, finish_time, learn_time, progress_bar, length, progress, source, source_id, is_delete, update_time, company_id from courseware_user
+    </sql>
+
+    <select id="selectCoursewareLearnList" parameterType="Map" resultMap="CoursewareLearnResult">
+        <include refid="selectCoursewareLearnVo"/>
+        where company_id = #{companyId}
+        <if test="eventId != null  and eventId != ''"> and event_id = #{eventId}</if>
+        <if test="courseId != null  and courseId != ''"> and course_id = #{courseId}</if>
+        <if test="coursewareId != null  and coursewareId != ''"> and courseware_id = #{coursewareId}</if>
+        <if test="coursewareIds != null">
+            and courseware_id in
+            <foreach item="id" collection="coursewareIds" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+        <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+        <if test="progress != null and progress > 0">progress = #{progress},</if>
+        <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+    </select>
+
+    <select id="selectCoursewareLearnCount" parameterType="Map" resultType="int">
+        select count(*) from courseware_user
+        where company_id = #{companyId}
+        <if test="eventId != null  and eventId != ''"> and event_id = #{eventId}</if>
+        <if test="courseId != null  and courseId != ''"> and course_id = #{courseId}</if>
+        <if test="coursewareId != null  and coursewareId != ''"> and courseware_id = #{coursewareId}</if>
+        <if test="coursewareIds != null">
+            and courseware_id in
+            <foreach item="id" collection="coursewareIds" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+        <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+        <if test="progress != null and progress > 0">progress = #{progress},</if>
+        <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+    </select>
+
+    <select id="getLessonLearnScreenList" parameterType="Map" resultMap="LessonLearnScreenResult">
+        SELECT ifnull(SUM(learn_time),0) as count,DATE_FORMAT(update_time, '%Y-%m-%d') AS date from courseware_user
+        WHERE company_id = #{companyId} AND DATE(update_time) = #{startTime}
+    </select>
+    
+    <select id="selectCoursewareLearnById" parameterType="Map" resultMap="CoursewareLearnResult">
+        <include refid="selectCoursewareLearnVo"/>
+        where company_id = #{companyId}
+        <if test="eventId != null  and eventId != ''"> and event_id = #{eventId}</if>
+        <if test="courseId != null  and courseId != ''"> and course_id = #{courseId}</if>
+        <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+        <if test="coursewareId != null  and coursewareId != ''"> and courseware_id = #{coursewareId}</if>
+        <if test="maxLearnTimeOne != null  and maxLearnTimeOne != ''">
+            order by learn_time desc limit 1
+        </if>
+    </select>
+
+    <select id="selectLastLearnInfo" parameterType="Map" resultMap="CoursewareLearnResult">
+        <include refid="selectCoursewareLearnVo"/>
+        where company_id = #{companyId}
+        <if test="eventId != null  and eventId != ''"> and event_id = #{eventId}</if>
+        <if test="courseId != null  and courseId != ''"> and course_id = #{courseId}</if>
+        <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+        <if test="coursewareId != null  and coursewareId != ''"> and courseware_id = #{coursewareId}</if>
+         order by update_time desc
+         limit 1
+    </select>
+
+    <insert id="insertCoursewareLearn" parameterType="CoursewareLearn" useGeneratedKeys="true" keyProperty="id">
+        insert into courseware_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="eventId != null">event_id,</if>
+            <if test="courseId != null">course_id,</if>
+            <if test="coursewareId != null">courseware_id,</if>
+            <if test="coursewareTitle != null">courseware_title,</if>
+            <if test="stageId != null">stage_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="finishTime != null">finish_time,</if>
+            <if test="learnTime != null">learn_time,</if>
+            <if test="progressBar != null">progress_bar,</if>
+            <if test="length != null">length,</if>
+            <if test="progress != null">progress,</if>
+            <if test="source != null">source,</if>
+            <if test="sourceId != null">source_id,</if>
+            <if test="isDelete != null">is_delete,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="companyId != null">company_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="eventId != null">#{eventId},</if>
+            <if test="courseId != null">#{courseId},</if>
+            <if test="coursewareId != null">#{coursewareId},</if>
+            <if test="coursewareTitle != null">#{coursewareTitle},</if>
+            <if test="stageId != null">#{stageId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="finishTime != null">#{finishTime},</if>
+            <if test="learnTime != null">#{learnTime},</if>
+            <if test="progressBar != null">#{progressBar},</if>
+            <if test="length != null">#{length},</if>
+            <if test="progress != null">#{progress},</if>
+            <if test="source != null">#{source},</if>
+            <if test="sourceId != null">#{sourceId},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="companyId != null">#{companyId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCoursewareLearn" parameterType="CoursewareLearn">
+        update courseware_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="finishTime != null">finish_time = #{finishTime},</if>
+            <if test="learnTime != null and learnTime > 0">learn_time = #{learnTime},</if>
+            <if test="progressBar != null and progressBar > 0">progress_bar = #{progressBar},</if>
+            <if test="length != null and length > 0">length = #{length},</if>
+            <if test="progress != null and progress > 0">progress = #{progress},</if>
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where company_id = #{companyId}
+        <if test="eventId != null  and eventId != ''"> and event_id = #{eventId}</if>
+        <if test="courseId != null  and courseId != ''"> and course_id = #{courseId}</if>
+        <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+        <if test="coursewareId != null  and coursewareId != ''"> and courseware_id = #{coursewareId}</if>
+    </update>
+
+    <delete id="deleteCoursewareLearnById" parameterType="Long">
+        delete from courseware_user where id = #{id}
+    </delete>
+
+    <delete id="deleteCoursewareLearnByIds" parameterType="String">
+        delete from courseware_user where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

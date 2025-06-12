@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.system.mapper.SysCompanyMapper">
+    
+    <resultMap type="SysCompany" id="SysCompanyResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="companyName"    column="company_name"    />
+        <result property="corpLogo"    column="corp_logo"    />
+        <result property="permanentCode"    column="permanent_code"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="isLock"    column="is_lock"    />
+        <result property="agentId"    column="agent_id"    />
+        <result property="authMode"    column="auth_mode"    />
+        <result property="leader"    column="leader"    />
+        <result property="authUserId"    column="auth_user_id"    />
+        <result property="phone"    column="phone"    />
+        <result property="usedSpace"    column="used_space"    />
+        <result property="extraSpace"    column="extra_space"    />
+        <result property="totalSpace"    column="total_space"    />
+        <result property="transCodeLength"    column="trans_code_length"    />
+        <result property="type"    column="type"    />
+        <result property="email"    column="email"    />
+        <result property="status"    column="status"    />
+        <result property="isDelete"    column="is_delete"    />
+        <result property="isPay"    column="is_pay"    />
+        <result property="isInit"    column="is_init"    />
+        <result property="periodValidity"    column="period_validity"    />
+        <result property="edition"    column="edition"    />
+        <result property="buyNum"    column="buy_num"    />
+        <result property="accreditNum"    column="accredit_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectSysCompanyVo">
+        select id, company_id, company_name,corp_logo, order_num,agent_id, permanent_code, is_lock, auth_mode,auth_user_id, leader, phone,is_pay,is_init,period_validity,edition,buy_num,accredit_num, type, email, used_space, extra_space, total_space, trans_code_length, status, is_delete, create_by, create_time, update_by, update_time from sys_company
+    </sql>
+
+    <select id="selectSysCompanyList" parameterType="SysCompany" resultMap="SysCompanyResult">
+        <include refid="selectSysCompanyVo"/>
+        <where>  
+        </where>
+    </select>
+    
+    <select id="selectSysCompanyById" parameterType="String" resultMap="SysCompanyResult">
+        <include refid="selectSysCompanyVo"/>
+        where company_id = #{companyId}
+    </select>
+        
+    <insert id="insertSysCompany" parameterType="SysCompany" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_company
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="companyId != null">company_id,</if>
+            <if test="companyName != null">company_name,</if>
+            <if test="corpLogo != null">corp_logo,</if>
+            <if test="permanentCode != null">permanent_code,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="isLock != null">is_lock,</if>
+            <if test="agentId != null">agent_id,</if>
+            <if test="authMode != null">auth_mode,</if>
+            <if test="leader != null">leader,</if>
+            <if test="authUserId != null">auth_user_id,</if>
+            <if test="phone != null">phone,</if>
+            <if test="type != null">type,</if>
+            <if test="email != null">email,</if>
+            <if test="status != null">status,</if>
+            <if test="isDelete != null">is_delete,</if>
+            <if test="isPay != null">is_pay,</if>
+            <if test="isInit != null">is_init,</if>
+            <if test="periodValidity != null">period_validity,</if>
+            <if test="edition != null">edition,</if>
+            <if test="buyNum != null">buy_num,</if>
+            <if test="accreditNum != null">accredit_num,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="companyId != null">#{companyId},</if>
+            <if test="companyName != null">#{companyName},</if>
+            <if test="corpLogo != null">#{corpLogo},</if>
+            <if test="permanentCode != null">#{permanentCode},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="isLock != null">#{isLock},</if>
+            <if test="agentId != null">#{agentId},</if>
+            <if test="authMode != null">#{authMode},</if>
+            <if test="leader != null">#{leader},</if>
+            <if test="authUserId != null">#{authUserId},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="type != null">#{type},</if>
+            <if test="email != null">#{email},</if>
+            <if test="status != null">#{status},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+            <if test="isPay != null">#{isPay},</if>
+            <if test="isInit != null">#{isInit},</if>
+            <if test="periodValidity != null">#{periodValidity},</if>
+            <if test="edition != null">#{edition},</if>
+            <if test="buyNum != null">#{buyNum},</if>
+            <if test="accreditNum != null">#{accreditNum},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysCompany" parameterType="SysCompany">
+        update sys_company
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyName != null">company_name = #{companyName},</if>
+            <if test="corpLogo != null">corp_logo = #{corpLogo},</if>
+            <if test="permanentCode != null">permanent_code = #{permanentCode},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="isLock != null">is_lock = #{isLock},</if>
+            <if test="agentId != null">agent_id = #{agentId},</if>
+            <if test="authMode != null">auth_mode = #{authMode},</if>
+            <if test="leader != null">leader = #{leader},</if>
+            <if test="authUserId != null">auth_user_id = #{authUserId},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="transCodeLength != null">trans_code_length = trans_code_length + #{transCodeLength},</if>
+            <if test="usedSpace != null">used_space = used_space + #{usedSpace},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+            <if test="isPay != null">is_pay = #{isPay},</if>
+            <if test="isInit != null">is_init = #{isInit},</if>
+            <if test="periodValidity != null">period_validity = #{periodValidity},</if>
+            <if test="edition != null">edition = #{edition},</if>
+            <if test="buyNum != null">buy_num = #{buyNum},</if>
+            <if test="accreditNum != null">accredit_num = #{accreditNum},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where company_id = #{companyId}
+    </update>
+
+    <delete id="deleteSysCompanyById" parameterType="Long">
+        delete from sys_company where id = #{id}
+    </delete>
+
+    <delete id="deleteSysCompanyByIds" parameterType="String">
+        delete from sys_company where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

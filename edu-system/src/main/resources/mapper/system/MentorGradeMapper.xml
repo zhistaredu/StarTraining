@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.system.mapper.MentorGradeMapper">
+    
+    <resultMap type="MentorGrade" id="MentorGradeResult">
+        <result property="id"    column="id"    />
+        <result property="uuid"    column="uuid"    />
+        <result property="title"    column="title"    />
+        <result property="type"    column="type"    />
+        <result property="synopsis"    column="synopsis"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+        <result property="companyId"    column="company_id"    />
+    </resultMap>
+
+    <sql id="selectMentorGradeVo">
+        select id, uuid, title, type, synopsis, create_time, update_time, create_user_id, update_user_id, company_id from mentor_grade
+    </sql>
+
+    <select id="selectMentorGradeList" parameterType="Map" resultMap="MentorGradeResult">
+        <include refid="selectMentorGradeVo"/>
+        where company_id = #{companyId}
+        <if test="uuid != null  and uuid != ''"> and uuid = #{uuid}</if>
+        <if test="type != null  and type != ''"> and type = #{type}</if>
+    </select>
+    
+    <select id="selectMentorGradeById" parameterType="Map" resultMap="MentorGradeResult">
+        <include refid="selectMentorGradeVo"/>
+        where company_id = #{companyId}
+        <if test="uuid != null  and uuid != ''"> and uuid = #{uuid}</if>
+        <if test="type != null  and type != ''"> and type = #{type}</if>
+    </select>
+        
+    <insert id="insertMentorGrade" parameterType="MentorGrade" useGeneratedKeys="true" keyProperty="id">
+        insert into mentor_grade
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="title != null">title,</if>
+            <if test="type != null">type,</if>
+            <if test="synopsis != null">synopsis,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="updateUserId != null">update_user_id,</if>
+            <if test="companyId != null">company_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="title != null">#{title},</if>
+            <if test="type != null">#{type},</if>
+            <if test="synopsis != null">#{synopsis},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="updateUserId != null">#{updateUserId},</if>
+            <if test="companyId != null">#{companyId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMentorGrade" parameterType="MentorGrade">
+        update mentor_grade
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null">title = #{title},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="synopsis != null">synopsis = #{synopsis},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateUserId != null">update_user_id = #{updateUserId},</if>
+        </trim>
+        where company_id = #{companyId}
+        <if test="uuid != null  and uuid != ''"> and uuid = #{uuid}</if>
+        <if test="type != null  and type != ''"> and type = #{type}</if>
+    </update>
+
+    <delete id="deleteMentorGradeById" parameterType="Long">
+        delete from mentor_grade where id = #{id}
+    </delete>
+
+    <delete id="deleteMentorGradeByIds" parameterType="String">
+        delete from mentor_grade where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

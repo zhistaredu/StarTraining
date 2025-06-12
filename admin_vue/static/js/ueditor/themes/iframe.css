@@ -1,0 +1,106 @@
+/*可以在这里添加你自己的css*/
+ul{
+	padding: 0;
+	margin: 0;
+}
+li{
+	list-style: none;
+}
+img{
+  max-width: 100%;
+}
+.case-detial-info {
+  position: relative;
+  height: auto;
+	overflow: hidden;
+	padding-top: 60px;
+	margin: 20px;
+}
+.case-detial-info::before {
+  content: '';
+  position: absolute;
+	left: -12px;
+	top: 60px;
+  bottom: 0;
+  height: 100%;
+  border-left: 20px solid #3296fa;
+}
+.case-detial-info > .icon{
+	position: absolute;
+	left: 2px;
+	top: 0px;
+}
+.case-detial-info .case-detial-info-msg {
+  width: 470px;
+  line-height: 32px;
+  font-size: 24px;
+  font-weight: 600;
+  padding: 0 70px 0 41px;
+  float: left;
+}
+.case-detial-info .case-detial-info-avatar {
+  max-width: 200px;
+  float: left;
+  text-align: center;
+  margin: 0 auto;
+  min-height: 290px;
+}
+.case-detial-info .case-detial-info-avatar .img {
+  width: 185px;
+  height: 185px;
+  border-radius: 50%;
+	overflow: hidden;
+	margin: 0 auto;
+	background-color: #ddd;
+}
+.case-detial-info .case-detial-info-avatar .img img{
+	width: 100%;
+	height: 100%;
+}
+.case-detial-info .case-detial-info-avatar h3 {
+  height: 32px;
+  line-height: 32px;
+  margin-top: 12px;
+}
+.case-detial-info .case-detial-info-avatar div {
+  display: block;
+  height: 23px;
+  line-height: 23px;
+}
+.case-detial-table {
+  margin-top: 20px;
+}
+.case-detial-table .table-tit,
+.case-detial-table ul{
+	width: 100% !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+.case-detial-table ul li {
+  background: #eee;
+  border-bottom: 1px solid #d6d6d6;
+}
+.case-detial-table .table-tit div,
+.case-detial-table ul li div {
+  display: inline-block;
+  width: 32%;
+  line-height: 23px;
+  font-size: 14px;
+  padding: 21px 22px;
+  height: 100%;
+  box-sizing: border-box;
+}
+.case-detial-table .table-tit {
+  background: none;
+  line-height: 63px;
+}
+.case-detial-table .table-tit div {
+  font-size: 24px;
+  color: #333;
+}
+.case-detial-table ul li {
+  min-height: 117px;
+}
+.case-detial-table ul li:nth-of-type(2n) {
+  background: #fff;
+}

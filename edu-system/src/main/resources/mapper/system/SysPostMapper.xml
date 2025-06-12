@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.system.mapper.SysPostMapper">
+    
+    <resultMap type="SysPost" id="SysPostResult">
+        <result property="id"    column="id"    />
+        <result property="postId"    column="post_id"    />
+        <result property="postName"    column="post_name"    />
+        <result property="groupId"    column="group_id"    />
+        <result property="groupName"    column="group_name"    />
+        <result property="userNum"    column="user_num"    />
+        <result property="postSort"    column="post_sort"    />
+        <result property="duty"    column="duty"    />
+        <result property="demand"    column="demand"    />
+        <result property="amount"    column="amount"    />
+        <result property="isDelete"    column="is_delete"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+        <result property="companyId"    column="company_id"    />
+    </resultMap>
+
+    <sql id="selectSysPostVo">
+        select id, post_id, group_id, post_name, post_sort, duty, demand, amount, is_delete, create_time, update_time, create_user_id, update_user_id, company_id from sys_post
+    </sql>
+
+    <select id="selectSysPostList" parameterType="Map" resultMap="SysPostResult">
+        select sp.post_id,sp. group_id, sp.post_name, sp.duty, sp.demand, sp.amount, sp.company_id, spg.title AS group_name, COUNT(sup.user_id) AS user_num from sys_post AS sp
+        LEFT JOIN sys_post_group AS spg ON sp.company_id = spg.company_id AND sp.group_id = spg.uuid AND spg.company_id = #{companyId} AND spg.is_delete = 0
+        LEFT JOIN sys_user_post AS sup ON sp.company_id = sup.company_id AND sp.post_id = sup.post_id AND sup.company_id = #{companyId} AND sup.is_delete = 0
+        where sp.company_id = #{companyId}
+        <if test="postId != null  and postId != ''"> and sp.post_id = #{postId}</if>
+        <if test="groupId != null  and groupId != ''"> and sp.group_id = #{groupId}</if>
+        <if test="isDelete != null "> and sp.is_delete = #{isDelete}</if>
+        GROUP BY sp.post_id
+    </select>
+
+    <select id="selectSysPostCount" parameterType="Map" resultType="int">
+        select count(*) from sys_post
+        where company_id = #{companyId}
+        <if test="postId != null  and postId != ''"> and post_id = #{postId}</if>
+        <if test="groupId != null  and groupId != ''"> and group_id = #{groupId}</if>
+        <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+    </select>
+    
+    <select id="selectSysPostById" parameterType="Map" resultMap="SysPostResult">
+        <include refid="selectSysPostVo"/>
+        where company_id = #{companyId} and post_id = #{postId}
+    </select>
+        
+    <insert id="insertSysPost" parameterType="SysPost" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_post
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="postId != null">post_id,</if>
+            <if test="groupId != null">group_id,</if>
+            <if test="postName != null">post_name,</if>
+            <if test="postSort != null">post_sort,</if>
+            <if test="duty != null">duty,</if>
+            <if test="demand != null">demand,</if>
+            <if test="amount != null">amount,</if>
+            <if test="isDelete != null">is_delete,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="updateUserId != null">update_user_id,</if>
+            <if test="companyId != null">company_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="postId != null">#{postId},</if>
+            <if test="groupId != null">#{groupId},</if>
+            <if test="postName != null">#{postName},</if>
+            <if test="postSort != null">#{postSort},</if>
+            <if test="duty != null">#{duty},</if>
+            <if test="demand != null">#{demand},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="updateUserId != null">#{updateUserId},</if>
+            <if test="companyId != null">#{companyId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysPost" parameterType="SysPost">
+        update sys_post
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="groupId != null">group_id = #{groupId},</if>
+            <if test="postName != null">post_name = #{postName},</if>
+            <if test="postSort != null">post_sort = #{postSort},</if>
+            <if test="duty != null">duty = #{duty},</if>
+            <if test="demand != null">demand = #{demand},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateUserId != null">update_user_id = #{updateUserId},</if>
+        </trim>
+        where company_id = #{companyId} and post_id = #{postId}
+    </update>
+
+    <delete id="deleteSysPostById" parameterType="Long">
+        delete from sys_post where id = #{id}
+    </delete>
+
+    <delete id="deleteSysPostByIds" parameterType="String">
+        delete from sys_post where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

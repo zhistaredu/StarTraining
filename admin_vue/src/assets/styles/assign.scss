@@ -1,0 +1,440 @@
+#assign{
+    &,& *{
+        box-sizing: border-box;
+    }
+
+}
+#dialogZhipai{
+    .el-dialog__header{
+        background-color: #409EFF;
+    }
+    .el-dialog__body{
+        padding: 0px 20px 30px 20px !important;
+    }
+    .el-dialog__title{
+        color: #f2f6fc !important;
+    }
+    .el-dialog__headerbtn .el-dialog__close {
+        color: #f2f6fc !important;
+    }
+}
+/*部门、人员选择弹出框新增 Start*/
+#choice{
+    position: relative;
+    width: 100%;
+    height: 440px;
+    margin-top: 30px;
+    box-sizing: border-box;
+}
+#choice .leftshow{
+    position: relative;
+    float: left;
+    width: 48%;
+    height: 440px;
+    /*padding: 0 0 0 5px;*/
+    border-radius:4px;
+    border:1px solid #e4e7f1;
+    .left-search{
+        position: absolute;
+        left: 5px;
+        top: 10px;
+    }
+}
+#choice .rightshow{
+    float: left;
+    width: 47%;
+    height: 440px;
+    margin-left: 30px;
+    border-radius:4px;
+    border:1px solid #e4e7f1;
+
+}
+#choice .leftshow .left-main{
+    height: 86%;
+    padding: 0 5px;
+}
+#choice .leftshow .left-main > span{
+    display: inline-block;
+    color:#222;
+    padding:2px 5px;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-right: 5px;
+    border:1px solid #E1E1E1;
+    border-radius:4px;
+}
+#choice .leftshow .left-main > span > i{
+    cursor:pointer;
+    color:#969696;
+    padding-right: 3px;
+}
+#choice .leftshow .left-btm{
+    text-align: right;
+    padding-right: 5px;
+    -webkit-transition:.5s all;
+            transition:.5s all;
+}
+#choice .right-tit{
+    color: #222;
+    font-size: 14px;
+    text-align: center;
+    padding: 5px 0 10px 0;
+}
+#choice .right-tab{
+    font-size: 0;
+    margin-top: 5px;
+    padding: 0 5px;
+    border-radius:4px;
+    display:flex;
+}
+#choice .right-tab span{
+    position: relative;
+    flex:1;
+    display: inline-block;
+    width: 33%;
+    height: 35px;
+    line-height: 35px;
+    font-size: 13px;
+    color:#303133;
+    text-align: center;
+    cursor: pointer;
+    // overflow: hidden;
+    // text-overflow: ellipsis;
+    // white-space: nowrap;
+    &::after{
+        display: block;
+        content:'';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #409EFF;
+        transform:scaleX(0);
+        transition:.3s transform;
+        /*transform-origin:left center;*/
+    }
+}
+#choice .right-tab span.by-sec{
+    &::after{
+        transform:scaleX(1);
+    }
+}
+#choice .right-nav{
+    padding: 0 10px;
+    line-height: 1.5;
+}
+.right-all > ul{
+    list-style:none;
+    padding: 0;
+    margin: 0;
+}
+.right-all > ul > li{
+    position: relative;
+    margin-top: 10px;
+    padding: 0 10px;
+}
+.right-all > ul > li.dep{
+    padding-bottom: 10px;
+    border-bottom:1px solid #ECECED;
+}
+.right-all > ul > li > *{
+    vertical-align: top;
+}
+.right-all > ul > li > input[type='checkbox']{
+    width: 16px;
+    height: 16px;
+}
+.right-count{
+    position: absolute;
+    right: 0;
+}
+.right-ul-com li span{
+    padding-left: 5px;
+}
+.right-ul-com{display: block;}
+#right-people{display: block;}
+.left-name{
+    display: inline-block;
+    width: 82%;
+    // white-space: nowrap;
+    // text-overflow: ellipsis;
+    // overflow: hidden;
+    cursor: pointer;
+}
+.checkspan{cursor: pointer;}
+.right-nav .fa-chevron-right{
+    padding: 0 10px;
+    font-size: 12px;
+}
+.nav-blue{
+    color:#38ADFF;
+    cursor: pointer;
+}
+.ban{
+    color:#c5c5c5 !important;
+    cursor: default;
+}
+.limit{
+    color:red;
+}
+/*部门、人员选择弹出框新增 End*/
+/* 2017-5-20指派人员的搜索模块 Start*/
+.right-wrap{
+    height: 89%;
+    margin-top: 10px;
+    overflow-y: auto;
+}
+#search-user{
+    position: relative;
+    z-index: 2;
+    display: block;
+    width: 100%;
+    height: 8%;
+    box-sizing: border-box;
+    padding: 0 10px 0 25px;
+    border-top-left-radius:4px;
+    border-top-right-radius:4px;
+    border:0;
+    border-bottom:1px solid #e4e7f1;
+    outline:none;
+    background-color: transparent;
+}
+#search-result{
+    position: absolute;
+    top: 8%;
+    left: 0;
+    width: 100%;
+    /*height: 87%;*/
+    height: 90%;
+    // z-index: -1;
+    /*z-index: 100;*/
+    overflow-y: auto;
+    background-color: #fff;
+    -webkit-transition:.3s all;
+        transition:.3s all;
+
+}
+.s-company{
+    font-size: 14px;
+    padding:5px 10px;
+    display: none;
+}
+.s-list{padding: 0;}
+.s-list li{
+    display:flex;
+    align-items:center;
+    list-style: none;
+    cursor: pointer;
+    padding: 6px 0 6px 10px;
+    -webkit-transition:.3s all;
+    transition:.3s all;
+}
+.s-list li:hover{
+    background-color: #ecf5ff;
+}
+.s-none{
+    font-size: 14px;
+    padding: 5px 10px;
+    background-color: #DFEDFA;
+}
+
+.s-head{
+    display: inline-block;
+    width: 38px;
+    height: 38px;
+    border-radius:50%;
+    vertical-align: middle;
+}
+.head-txt{
+    text-align: center;
+    line-height: 38px;
+    font-size: 14px;
+    color:#fff;
+    background: gray;
+}
+.s-info{
+    display: inline-block;
+    padding: 0 0 0 5px;
+    vertical-align: middle;
+    width: 260px;
+}
+.s-info p{
+    margin: 0;
+    line-height: 1.3;
+    font-size: 12px;
+    // white-space: nowrap;
+    // overflow: hidden;
+    // text-overflow: ellipsis;
+}
+.s-info p:first-child{
+    font-size: 14px;
+    color:#000;
+}
+.search-tip{
+    display: block;
+    position: absolute;
+    left: 6px;
+    top: 0;
+    /*width: 100%;*/
+    height: 8%;
+    box-sizing: border-box;
+    padding: 6px 10px;
+    color:#969595;
+    cursor: text;
+    font-weight: normal;
+    -webkit-transition:.3s ease;
+            transition:.3s ease;
+}
+.floating{
+   top: -18px;
+   background-color: #fff;
+}  
+.leftshow .fa-search {
+    position: absolute;
+    top: 10px;
+    left: 6px;
+    color: #767676;
+}
+/* 2017-5-20指派人员的搜索模块 End*/
+.group-desc,.gposition-desc{
+    font-size: 12px;
+    // white-space:nowrap;
+    // overflow: hidden;
+    padding-left: 21px;
+    // text-overflow: ellipsis;
+}
+#right-group > li.group{
+    padding-bottom: 5px;
+    border-bottom:1px solid #ECECED;
+}
+#group-tip{
+    display: none;
+    position: fixed;
+    top: 200px;
+    left: 50%;
+    width: 500px;
+    margin-left: -190px;
+    border-radius:2px;
+    border:1px solid #AADBFE;
+    background-color: #fff;
+}
+.group-cover{
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.5);
+}
+.group-name{
+    padding:30px 20px;
+}
+.group-name input{
+    padding: 0 5px;
+    height: 30px;
+    line-height: 30px;
+    outline: none;
+}
+#group-tip .modal-footer {
+    padding: 10px 20px 12px;
+    text-align: right;
+    border-top: 1px solid #e5e5e5;
+}
+#group-tip .modal-header{
+    padding-left: 20px;
+}
+
+.btn.btn-label{
+    background: #fff;
+    border: 1px solid #46c37b;
+    color: #46c37b;
+    padding: 6px 18px;
+}
+/*.modal-footer .btn+.btn {
+    margin-bottom: 0;
+    margin-left: 15px;
+}*/
+.modal-footer {
+    padding: 20px 20px 20px;
+}
+
+/* 2017年10月26日 配课 */
+#choice .left-nav {
+    /* padding: 0 10px; */
+    padding: 5px;
+    line-height: 1.5;
+    overflow-x: auto;
+    // white-space: nowrap;
+}
+.nav-blue {
+    color: #38ADFF;
+    cursor: pointer;
+}
+.left-nav .fa-chevron-right {
+    padding: 0 5px;
+    font-size: 12px;
+}
+.left-all > ul {
+    height: 350px;
+    overflow-y: auto;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.left-all > ul > li {
+    position: relative;
+    margin-top: 8px;
+    padding: 0 5px;
+}
+.left-all > ul > li > input[type='checkbox'],.left-all > ul > li> label > input[type='checkbox'] {
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+}
+/* .left-all > ul > li  * {
+    vertical-align: top;
+} */
+.left-down{
+    position: absolute;
+    right: 5px;
+    color:#38ADFF;
+    cursor: pointer;
+}
+.left-main .left-name .fa-folder{
+    position: relative;
+    top: 1px;
+    font-size: 16px;
+    /*color:#38ADFF;*/
+    color:#AEE4FA;
+    margin-right: 4px;
+}
+.right-name .fa-folder{
+    color:#AEE4FA;
+    margin-right: 4px;
+    font-size: 16px;
+}
+.left-ul strong,.right-ul strong{
+    font-weight: normal;
+}
+.lesson-del{
+    position: relative;
+    /*right: 5px;*/
+    top: -1px;
+    -webkit-transition:.3s all;
+    transition:.3s all;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+}
+.lesson-del:hover{
+    -webkit-transform:scale(1.2);
+    -moz-transform:scale(1.2);
+    transform:scale(1.2);
+}
+// .s-lesson-name{
+//     white-space: nowrap;
+//     overflow: hidden;
+//     text-overflow: ellipsis;
+// }

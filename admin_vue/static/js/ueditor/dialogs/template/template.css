@@ -1,0 +1,109 @@
+.wrap{ padding: 5px;font-size: 14px;}
+.left{width:425px;float: left;}
+.right{width:160px;border: 1px solid #ccc;float: right;padding: 5px;margin-right: 5px;}
+.right .pre{height: 332px;overflow-y: auto;}
+.right .preitem{border: white 1px solid;margin: 5px 0;padding: 2px 0;}
+.right .preitem:hover{background-color: lemonChiffon;cursor: pointer;border: #ccc 1px solid;}
+.right .preitem img{display: block;margin: 0 auto;width:100px;}
+.clear{clear: both;}
+.top{height:26px;line-height: 26px;padding: 5px;}
+.bottom{height:320px;width:100%;margin: 0 auto;}
+.transparent{ background: url("images/bg.gif") repeat;}
+.bottom table tr td{border:1px dashed #ccc;}
+#colorPicker{width: 17px;height: 17px;border: 1px solid #CCC;display: inline-block;border-radius: 3px;box-shadow: 2px 2px 5px #D3D6DA;}
+.border_style1{padding:2px;border: 1px solid #ccc;border-radius: 4px;box-shadow:2px 2px 5px #d3d6da;}
+p{margin: 5px 0}
+table{clear:both;margin-bottom:10px;border-collapse:collapse;word-break:break-all;}
+li{clear:both}
+ol{padding-left:40px; }
+.case-detial-info {
+  position: relative;
+  height: auto;
+	overflow: hidden;
+	padding-top: 60px;
+	margin: 20px;
+}
+.case-detial-info::before {
+  content: '';
+  position: absolute;
+	left: -12px;
+	top: 60px;
+  bottom: 0;
+  height: 100%;
+  border-left: 20px solid #3296fa;
+}
+.case-detial-info > .icon{
+	position: absolute;
+	left: 2px;
+	top: 0px;
+}
+.case-detial-info .case-detial-info-msg {
+  width: 60%;
+  line-height: 32px;
+  font-size: 24px;
+  font-weight: 600;
+	padding: 0 20px 0 20px;
+	box-sizing: border-box;
+  float: left;
+}
+.case-detial-info .case-detial-info-avatar {
+  width: 40%;
+  float: left;
+  text-align: center;
+	margin: 0 auto;
+	overflow: hidden;
+}
+.case-detial-info .case-detial-info-avatar .img {
+  width: 150px;
+  height: 150px;
+	border-radius: 50%;
+	overflow: hidden;
+	margin: 0 auto;
+	background-color: #ddd;
+}
+.case-detial-info .case-detial-info-avatar .img img{
+	width: 100%;
+	height: 100%;
+}
+.case-detial-info .case-detial-info-avatar h3 {
+  height: 32px;
+  line-height: 32px;
+  margin-top: 12px;
+}
+.case-detial-info .case-detial-info-avatar div {
+  display: block;
+  height: 23px;
+  line-height: 23px;
+}
+.case-detial-table {
+  margin-top: 20px;
+}
+.case-detial-table .table-tit,
+.case-detial-table ul li {
+  background: #eee;
+  border-bottom: 1px solid #d6d6d6;
+}
+.case-detial-table .table-tit div,
+.case-detial-table ul li div {
+  display: inline-block;
+  width: 32%;
+  line-height: 23px;
+  font-size: 14px;
+  padding: 10px;
+  height: 100%;
+  box-sizing: border-box;
+}
+.case-detial-table .table-tit {
+  background: none;
+  line-height: 63px;
+}
+.case-detial-table .table-tit div {
+  font-size: 24px;
+  color: #333;
+}
+.case-detial-table ul li {
+  min-height: 70px;
+}
+.case-detial-table ul li:nth-of-type(2n) {
+  background: #fff;
+}

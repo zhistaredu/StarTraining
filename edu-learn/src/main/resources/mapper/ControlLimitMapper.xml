@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.mapper.ControlLimitMapper">
+
+    <resultMap type="ControlLimit" id="VisibleHomeResult">
+        <result property="id"    column="id"    />
+        <result property="homeId"    column="home_id"    />
+        <result property="name"    column="name"    />
+        <result property="scopeType"    column="scope_type"    />
+        <result property="targetId"    column="target_id"    />
+        <result property="uuid"    column="uuid"    />
+        <result property="title"    column="title"    />
+        <result property="passStatus"    column="pass_status"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="attemptNum"    column="attempt_num"    />
+        <result property="duration"    column="duration"    />
+        <result property="attempt"    column="attempt"    />
+        <result property="userPassScore"    column="user_pass_score"    />
+        <result property="totalScore"    column="total_score"    />
+        <result property="getScore"    column="get_score"    />
+        <result property="passTime"    column="pass_time"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="categoryTitle"    column="category_title"    />
+        <result property="status"    column="status"    />
+        <result property="isDelete"    column="is_delete"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+        <result property="companyId"    column="company_id"    />
+    </resultMap>
+
+    <resultMap type="ControlLimitScope" id="VisibleScopeResult">
+        <result property="homeId"    column="home_id"    />
+        <result property="name"    column="name"    />
+        <result property="scopeType"    column="scope_type"    />
+        <result property="targetId"    column="target_id"    />
+        <result property="companyId"    column="company_id"    />
+    </resultMap>
+
+    <resultMap type="KnowledgeControlLimit" id="VisibleCourseHomeResult">
+        <result property="targetId"    column="target_id"    />
+        <result property="uuid"    column="uuid"    />
+        <result property="title"    column="title"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="categoryTitle"    column="category_title"    />
+        <result property="picture"    column="picture"    />
+        <result property="learnMode"    column="learn_mode"    />
+        <result property="speed"    column="speed"    />
+        <result property="drag"    column="drag"    />
+        <result property="coursewareNum"    column="courseware_num"    />
+        <result property="totalLength"    column="total_length"    />
+        <result property="studentNum"    column="student_num"    />
+        <result property="requiredNum"    column="required_num"    />
+        <result property="electiveNum"    column="elective_num"    />
+        <result property="progress"    column="progress"    />
+        <result property="learnStatus"    column="learn_status"    />
+        <result property="finishTime"    column="finish_time"    />
+        <result property="status"    column="status"    />
+        <result property="companyId"    column="company_id"    />
+    </resultMap>
+
+    <sql id="selectVisibleHomeVo">
+        select va.target_id, va.company_id,tva.uuid,tva.title,tva.category_id,tva.category_title from knowledge_visible va LEFT JOIN knowledge tva ON tva.uuid = va.target_Id
+            AND va.company_id = tva.company_id
+    </sql>
+
+    <sql id="selectCourseVisibleHomeVo">
+        select va.target_id,tva.uuid,tva.title,tva.category_id,tva.category_title,tva.picture,tva.learn_mode,tva.speed,
+               tva.drag,tva.courseware_num,tva.duration,COUNT(tu.id) AS student_num,tu.progress,
+               tu.learn_status,tu.finish_time,va.company_id from knowledge_visible va JOIN knowledge tva ON tva.uuid = va.target_id
+            AND tva.company_id = #{companyId} LEFT JOIN knowledge_user tu ON tu.target_id = va.target_id AND tu.company_id = #{companyId} AND tu.user_id = #{userId}
+    </sql>
+
+    <select id="selectVisibleHomeCount" parameterType="Map" resultType="int">
+        select count(DISTINCT target_id) from knowledge_visible
+        where company_id = #{companyId} AND is_delete = 0
+        <if test="targetId != null  and targetId != ''"> and target_id = #{targetId}</if>
+    </select>
+
+    <select id="selectVisibleHomeJoinCount" parameterType="Map" resultType="int">
+        select count(DISTINCT t.target_id) from knowledge_visible AS t LEFT JOIN knowledge_user AS tu ON tu.target_id = t.target_id AND tu.company_id = t.company_id
+        where t.company_id = #{companyId} AND tu.company_id = #{companyId} AND t.is_delete = 0
+        <if test="targetId != null  and targetId != ''"> and t.target_id = #{targetId}</if>
+        <if test="learnStatus != null  and learnStatus != ''"> and tu.learn_status = #{learnStatus}</if>
+    </select>
+
+    <select id="selectVisibleList" parameterType="Map" resultMap="VisibleScopeResult">
+        select home_id, name, scope_type, target_id, company_id from knowledge_visible
+        where company_id = #{companyId} AND is_delete = 0
+    </select>
+
+    <select id="selectVisibleCourseHomeList" parameterType="Map" resultMap="VisibleCourseHomeResult">
+        <include refid="selectCourseVisibleHomeVo"/>
+        where va.company_id = #{companyId} AND tva.company_id = #{companyId} AND tva.is_delete = 0 AND tva.status = 1
+        <if test="homeId != null  and homeId != ''"> and va.home_id = #{homeId}</if>
+        <if test="learnStatus != null  and learnStatus != '' and learnStatus != 'all'"> and tu.learn_status = #{learnStatus}</if>
+        <if test="categoryId != null  and categoryId != ''"> and tva.category_id = #{categoryId}</if>
+        <if test="lectorId != null  and lectorId != ''"> and tva.lector_id = #{lectorId}</if>
+        <if test="keyword != null  and keyword != ''"> and tva.title like concat('%', #{keyword}, '%')</if>
+        <if test="targetId != null  and targetId != ''"> and va.target_id = #{targetId}</if>
+        <if test="targetId != null  and targetId != ''"> and tu.source_id = #{targetId}</if>
+        ORDER BY tva.id DESC
+    </select>
+
+    <select id="selectVisibleCourseHomeInfo" parameterType="Map" resultMap="VisibleCourseHomeResult">
+        select target_id,company_id from knowledge_visible
+        where company_id = #{companyId} AND is_delete = 0
+        <if test="targetId != null  and targetId != ''"> and target_id = #{targetId}</if>
+    </select>
+
+    <select id="selectVisibleHomeManageList" parameterType="Map" resultMap="VisibleHomeResult">
+        select home_id,name,scope_type,target_id,company_id from knowledge_visible
+        where company_id = #{companyId} and is_delete = 0 and target_id = #{targetId}
+    </select>
+
+    <select id="selectVisibleHomeList" parameterType="Map" resultMap="VisibleHomeResult">
+        <if test="targetTable == null">
+            <include refid="selectVisibleHomeVo"/>
+        </if>
+        where va.company_id = #{companyId} AND tva.company_id = #{companyId} AND tu.company_id = #{companyId} AND tva.is_delete = 0 AND tva.status = 1
+        <if test="homeId != null  and homeId != ''"> and va.home_id = #{homeId}</if>
+        <if test="userId != null  and userId != ''"> and tu.user_id = #{userId}</if>
+        <if test="keyword != null  and keyword != ''"> and tva.title like concat('%', #{keyword}, '%')</if>
+        <if test="targetId != null  and targetId != ''"> and va.target_id = #{targetId}</if>
+        ORDER BY tva.id DESC,tva.start_time ASC
+    </select>
+
+    <insert id="insertVisibleHomeAll">
+        insert into knowledge_visible
+        (
+        home_id,
+        name,
+        scope_type,
+        target_id,
+        is_delete,
+        create_time,
+        update_time,
+        create_user_id,
+        update_user_id,
+        company_id
+        ) VALUES
+        <foreach collection="insertData" separator="," item="data">
+            (
+            #{data.homeId},
+            #{data.name},
+            #{data.scopeType},
+            #{data.targetId},
+            #{data.isDelete},
+            #{data.createTime},
+            #{data.updateTime},
+            #{data.createUserId},
+            #{data.updateUserId},
+            #{data.companyId}
+            )
+        </foreach>
+        on duplicate key update
+        is_delete = values(is_delete)
+    </insert>
+
+    <delete id="deleteVisibleHomeById" parameterType="Map">
+        delete from knowledge_visible where company_id = #{companyId} AND target_id = #{targetId}
+    </delete>
+
+    <delete id="deleteVisibleHomeByIds" parameterType="String">
+        delete from knowledge_visible where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
