@@ -1,9 +1,9 @@
 <h2 align="center">职星学院企业培训系统</h2>
 
 <h4 align="center">
-  <a href="https://app135926.eapps.dingtalkcloud.com">官网</a> |
-  <a href="https://app135926.eapps.dingtalkcloud.com">商业版</a> |
-  <a href="https://app135926.eapps.dingtalkcloud.com">演示站</a>
+  <a href="https://staredupro.cn">官网</a> |
+  <a href="https://staredupro.cn">商业版</a> |
+  <a href="https://staredupro.cn">演示站</a>
 </h4>
 
 <a name="H9sKD"></a>
@@ -14,7 +14,7 @@
 | **技术栈** | 1、JDK >= 1.8 (推荐1.8版本)<br />2、Mysql >= 8.0 (推荐8.0版本)<br />3、Redis >= 3.0<br />4、Maven >= 3.0<br />5、SpringBoot2.5.8<br />6、VUE2<br />7、JavaScript |
 | --- |---------------------------------------------------------------------------------------------------------------------------------------------------|
 | **企业版支持** | 1、钉钉、企业微信**自建应用**部署方式<br />2、钉钉、企业微信**第三方应用**部署方式（**附：安全管理制度和应急预案和流程**）<br />3、**100%源码交付**，企业可自由拓展功能，满足不同培训场景的需求。                                |
-| **官方网站** | [https://app135926.eapps.dingtalkcloud.com/](https://app135926.eapps.dingtalkcloud.com/)                                                          |
+| **官方网站** | [https://staredupro.cn/](https://staredupro.cn/)                                                          |
 
 <a name="K63Qv"></a>
 ## 系统概览
@@ -23,10 +23,10 @@
 
 <a name="431b259b"></a>
 ## 商业版网页体验链接，前往<a href="https://app135926.eapps.dingtalkcloud.com">官网</a>获取账号密码
-| 管理员端地址 | [https://app135926.eapps.dingtalkcloud.com/dist/index](https://app135926.eapps.dingtalkcloud.com/dist/index) |
+| 管理员端地址 | [https://pro.staredupro.cn/dist/index](https://pro.staredupro.cn/dist/index) |
 | --- | --- |
-| PC学员端地址 | [https://app135926.eapps.dingtalkcloud.com/pcuser/home](https://app135926.eapps.dingtalkcloud.com/pcuser/home) |
-| H5学员端地址 | [https://app135926.eapps.dingtalkcloud.com/mobile/index](https://app135926.eapps.dingtalkcloud.com/mobile/index) |
+| PC学员端地址 | [https://pro.staredupro.cn/pcuser/home](https://pro.staredupro.cn/pcuser/home) |
+| H5学员端地址 | [https://pro.staredupro.cn/mobile/index](https://pro.staredupro.cn/mobile/index) |
 
 
 <a name="dlymo"></a>
