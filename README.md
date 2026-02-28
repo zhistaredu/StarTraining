@@ -22,7 +22,7 @@
 ![171743272ew12.png](https://chuanzhiedu.oss-cn-hangzhou.aliyuncs.com/xuanchuan/manage.png)
 
 <a name="431b259b"></a>
-## 商业版网页体验链接，前往<a href="https://app135926.eapps.dingtalkcloud.com">官网</a>获取账号密码
+## 商业版网页体验链接，前往<a href="https://staredupro.cn">官网</a>获取账号密码
 | 管理员端地址 | [https://pro.staredupro.cn/dist/index](https://pro.staredupro.cn/dist/index) |
 | --- | --- |
 | PC学员端地址 | [https://pro.staredupro.cn/pcuser/home](https://pro.staredupro.cn/pcuser/home) |
