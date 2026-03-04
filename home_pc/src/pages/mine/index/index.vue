@@ -40,6 +40,17 @@
             <span><i class="iconfont icon-zhengshu2"></i><span>我的证书</span></span>
             <i class="iconfont icon-xiangyoujiantou"></i>
           </div>
+          <div
+            class="list-item"
+            :class="{ active: listType == 'changeCode' }"
+            @click="changeListType('changeCode')"
+          >
+            <span
+              ><i class="iconfont icon-suo4"></i
+              ><span>修改密码</span></span
+            >
+            <i class="iconfont icon-xiangyoujiantou"></i>
+          </div>
 
         </div>
       </div>
@@ -49,6 +60,8 @@
         <creditList v-if="listType == 'credit'"></creditList>
         <!-- 证书 -->
         <CertificateList v-else-if="listType == 'certificate'"></CertificateList>
+        <!-- 修改密码 -->
+        <ChangeCodeCom v-else-if="listType == 'changeCode'"></ChangeCodeCom>
       </div>
     </div>
 
@@ -57,7 +70,7 @@
 
 <script>
 import { getUserInfo, insertPicture } from '@/api/user'
-
+import ChangeCodeCom from '../components/changeCodeCom'
 import CertificateList from '../components/certificateList'
 import creditList from '../components/creditList'
 
@@ -66,6 +79,7 @@ export default {
   components: {
     CertificateList,
     creditList,
+    ChangeCodeCom
   },
   data() {
     return {

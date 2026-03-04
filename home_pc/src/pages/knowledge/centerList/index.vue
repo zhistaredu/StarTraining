@@ -105,7 +105,7 @@ export default {
     },
     // 获取分类列表
     getCategoryList() {
-      getCourseCategoryList().then((res) => {
+      getCourseCategoryList({ source: 'knowledge' }).then((res) => {
         this.categoryList = res.data
         this.categoryList.unshift({
           label: '全部',

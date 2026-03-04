@@ -90,3 +90,11 @@ export function login(data) {
     data: data
   })
 }
+// 修改密码
+export function codeChange(data) {
+  return request({
+    url: '/system/user/profile/updatePwd',
+    method: 'put',
+    data: data
+  })
+}

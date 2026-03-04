@@ -3,7 +3,7 @@
     <div class="header">
       <div class="lf">
         <div class="logo">
-          <img src="@assets/img/logo2.png" alt="">
+          <span>LOGO</span>
           <span>{{ userData.companyName }}</span>
         </div>
 
